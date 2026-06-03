@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeachSmart · Unidad 1: Mentalidad y Fundamentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --ink2: #3d3830;
+    --ink3: #7a7066;
+    --paper: #f9f6f0;
+    --paper2: #f2ede4;
+    --paper3: #e8e0d0;
+    --accent: #c4430a;
+    --accent2: #e8a020;
+    --accent3: #2a6049;
+    --rule: #d4c9b8;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --display: 'Playfair Display', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --col: 680px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .site-header .brand {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    text-decoration: none;
+    opacity: 0.9;
+  }
+  .site-header .unit-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+    text-transform: uppercase;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 40px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    padding: 0 24px 32px;
+  }
+  .sidebar-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2e2a24;
+  }
+  .nav-item {
+    display: block;
+    padding: 9px 12px;
+    margin-bottom: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    color: #a89e90;
+    font-family: var(--serif);
+    font-size: 13.5px;
+    font-weight: 300;
+    line-height: 1.4;
+  }
+  .nav-item:hover { background: #2a2520; color: var(--paper); }
+  .nav-item.active { background: var(--accent); color: white; font-weight: 400; }
+  .nav-item .num {
+    font-family: var(--mono);
+    font-size: 10px;
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    flex: 1;
+    min-width: 0;
+    padding: 60px 80px 120px;
+  }
+
+  /* ── ARTICLE ── */
+  .article { display: none; max-width: var(--col); }
+  .article.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Cover line */
+  .cover-line {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  /* Article title */
+  .article-title {
+    font-family: var(--display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .article-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .article-subtitle {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink3);
+    margin-bottom: 40px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 32px;
+  }
+
+  /* Drop cap */
+  .drop-cap::first-letter {
+    font-family: var(--display);
+    font-size: 4.8em;
+    font-weight: 900;
+    float: left;
+    line-height: 0.78;
+    margin-right: 10px;
+    margin-top: 6px;
+    color: var(--accent);
+  }
+
+  /* Body text */
+  p { margin-bottom: 1.4em; }
+  p + p { text-indent: 1.5em; }
+  p + p.no-indent { text-indent: 0; }
+
+  /* Headings */
+  h2 {
+    font-family: var(--display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 52px 0 18px;
+    padding-top: 8px;
+    border-top: 2px solid var(--ink);
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink2);
+    margin: 32px 0 12px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    margin: 48px -40px;
+    padding: 32px 40px;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .pull-quote::before {
+    content: '\201C';
+    font-family: var(--display);
+    font-size: 200px;
+    font-weight: 900;
+    color: var(--accent);
+    position: absolute;
+    top: -40px;
+    left: 20px;
+    opacity: 0.15;
+    line-height: 1;
+  }
+  .pull-quote p {
+    font-family: var(--display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--paper);
+    margin: 0;
+    text-indent: 0 !important;
+    position: relative;
+    z-index: 1;
+  }
+  .pull-quote .attribution {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent2);
+    margin-top: 12px;
+    display: block;
+    text-indent: 0;
+  }
+
+  /* Callout box */
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    margin: 32px 0;
+    background: var(--paper2);
+  }
+  .callout .callout-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .callout p { margin: 0; font-size: 15.5px; line-height: 1.65; }
+  .callout p + p { text-indent: 0; margin-top: 10px; }
+
+  /* Theory box */
+  .theory-box {
+    border: 1px solid var(--rule);
+    padding: 28px 32px;
+    margin: 36px 0;
+    position: relative;
+    background: white;
+  }
+  .theory-box::before {
+    content: attr(data-label);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--accent3);
+    padding: 4px 12px;
+    position: absolute;
+    top: -12px;
+    left: 24px;
+  }
+  .theory-box h4 {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .theory-box p { font-size: 15.5px; margin-bottom: 0.8em; }
+  .theory-box p:last-child { margin-bottom: 0; }
+
+  /* Two-column comparison */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 32px 0;
+    background: var(--rule);
+  }
+  .col-panel {
+    padding: 24px 28px;
+  }
+  .col-panel.bad { background: #fdf5f3; }
+  .col-panel.good { background: #f3faf6; }
+  .col-panel .panel-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: block;
+    font-weight: 500;
+  }
+  .col-panel.bad .panel-label { color: #b03a20; }
+  .col-panel.good .panel-label { color: var(--accent3); }
+  .col-panel p { font-size: 14.5px; line-height: 1.6; margin: 0 0 8px; color: var(--ink2); }
+  .col-panel p:last-child { margin-bottom: 0; }
+
+  /* Numbered concept list */
+  .concept-list { list-style: none; padding: 0; margin: 24px 0; }
+  .concept-list li {
+    display: flex;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .concept-list li:first-child { border-top: 1px solid var(--rule); }
+  .concept-list .c-num {
+    font-family: var(--display);
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--paper3);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: right;
+  }
+  .concept-list .c-body { flex: 1; }
+  .concept-list .c-body strong {
+    font-family: var(--serif);
+    font-size: 15.5px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .concept-list .c-body p { font-size: 14.5px; margin: 0; color: var(--ink2); line-height: 1.6; text-indent: 0; }
+
+  /* Bloom pyramid visualization */
+  .bloom-pyramid {
+    margin: 36px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+  }
+  .bloom-level {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: 3px;
+    padding: 0 20px;
+    cursor: default;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .bloom-level:hover { transform: scaleX(1.01); box-shadow: 4px 4px 0 rgba(0,0,0,0.08); z-index: 2; }
+  .bloom-level .level-name {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    min-width: 90px;
+  }
+  .bloom-level .level-desc {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    margin-left: 12px;
+  }
+  .bloom-level .level-verbs {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    position: absolute;
+    right: 20px;
+  }
+
+  /* Inline figure */
+  .figure {
+    margin: 40px 0;
+    padding: 28px;
+    background: var(--paper2);
+    border-top: 3px solid var(--accent2);
+  }
+  .figure-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+    margin-top: 16px;
+    display: block;
+  }
+
+  /* Key term */
+  .key-term {
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1.5px solid var(--accent);
+  }
+
+  /* Progress bar at article bottom */
+  .article-footer {
+    margin-top: 72px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 10px 20px;
+    color: var(--ink2);
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .nav-btn.primary:hover { background: var(--ink); border-color: var(--ink); }
+
+  /* Summary tags */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid var(--rule);
+    color: var(--ink3);
+    letter-spacing: 0.05em;
+  }
+
+  /* Quote inline */
+  blockquote {
+    margin: 28px 0;
+    padding: 0 0 0 24px;
+    border-left: 2px solid var(--accent2);
+  }
+  blockquote p {
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink2);
+    text-indent: 0 !important;
+    margin: 0;
+  }
+  blockquote cite {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+    font-style: normal;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 14.5px; }
+  th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--paper2); }
+
+  /* Progress indicator */
+  .progress-track {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .progress-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--rule);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .progress-dot.done { background: var(--accent3); }
+  .progress-dot.active { background: var(--accent); transform: scale(1.3); }
+
+  /* Reading time */
+  .meta-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .meta-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink3);
+  }
+  .meta-item strong { color: var(--ink2); font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 32px 24px 80px; }
+    .pull-quote { margin: 36px -24px; padding: 28px 24px; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="brand">TEACHSMART</span>
+  <span class="unit-label">Unidad 1 · Mentalidad y Fundamentos</span>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Artículos</div>
+
+      <button class="nav-item active" onclick="show(0)">
+        <span class="num">1.1</span>
+        ¿Qué es realmente enseñar?
+      </button>
+      <button class="nav-item" onclick="show(1)">
+        <span class="num">1.2</span>
+        La mentalidad de crecimiento en la tutoría
+      </button>
+      <button class="nav-item" onclick="show(2)">
+        <span class="num">1.3</span>
+        Taxonomía de Bloom: del saber al hacer
+      </button>
+      <button class="nav-item" onclick="show(3)">
+        <span class="num">1.4</span>
+        El tutor como diseñador de experiencias
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Progreso</div>
+      <div class="progress-track" id="progress-dots">
+        <div class="progress-dot active" onclick="show(0)" title="Artículo 1.1"></div>
+        <div class="progress-dot" onclick="show(1)" title="Artículo 1.2"></div>
+        <div class="progress-dot" onclick="show(2)" title="Artículo 1.3"></div>
+        <div class="progress-dot" onclick="show(3)" title="Artículo 1.4"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- ARTÍCULO 1.1 -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <article class="article active" id="art-0">
+
+      <div class="cover-line">Unidad 1 · Artículo 1.1</div>
+      <h1 class="article-title">¿Qué es realmente <em>enseñar?</em></h1>
+      <p class="article-subtitle">La diferencia entre transmitir información y generar aprendizaje genuino — y por qué confundirlos arruina la mayoría de las tutorías.</p>
+
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>12 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>4</strong></span>
+        <span class="meta-item">Nivel: <strong>Fundacional</strong></span>
+      </div>
+
+      <div class="tag-list">
+        <span class="tag">aprendizaje profundo</span>
+        <span class="tag">constructivismo</span>
+        <span class="tag">rol del tutor</span>
+        <span class="tag">Marton & Säljö</span>
+        <span class="tag">Vygotsky</span>
+      </div>
+
+      <p class="drop-cap">Existe una creencia extendida, silenciosa y perniciosa en el mundo de la tutoría académica: que enseñar bien consiste, fundamentalmente, en explicar bien. Que si el tutor domina el contenido y lo presenta de manera clara, el estudiante inevitablemente aprenderá. Esta creencia es comprensible — es intuitiva, incluso razonable — pero está equivocada, y entender por qué está equivocada es el primer acto intelectual que separa a un tutor promedio de uno de alto impacto.</p>
+
+      <p>La confusión entre <span class="key-term">explicar</span> y <span class="key-term">enseñar</span> no es un problema de semántica. Tiene consecuencias reales: sesiones donde el tutor habla durante cuarenta minutos y el estudiante asiente, pero al día siguiente no recuerda nada. Clases donde se "termina el tema" pero el estudiante no puede resolver un ejercicio diferente al que se practicó. Tutorías donde el estudiante se siente bien al salir pero fracasa en la evaluación.</p>
+
+      <div class="pull-quote">
+        <p>"La enseñanza no ocurre cuando alguien habla. Ocurre cuando alguien cambia su manera de pensar."</p>
+        <span class="attribution">— Adaptado de Frank Smith, psicólogo del lenguaje</span>
+      </div>
+
+      <h2>Aprendizaje superficial vs. aprendizaje profundo</h2>
+
+      <p>En 1976, los investigadores suecos Ference Marton y Roger Säljö publicaron un estudio que cambiaría la manera en que entendemos el aprendizaje. Pidieron a estudiantes universitarios que leyeran un texto académico y, después, los entrevistaron sobre lo que habían comprendido. Lo que encontraron no fue un continuo de "cuánto" habían aprendido, sino dos maneras cualitativamente distintas de aproximarse a la tarea.</p>
+
+      <div class="two-col">
+        <div class="col-panel bad">
+          <span class="panel-label">✕ Aprendizaje superficial</span>
+          <p>El estudiante intenta <strong>memorizar el texto</strong> — reproduce palabras, estructuras, listas. No pregunta qué significa. No conecta con lo que ya sabe. No evalúa ni cuestiona.</p>
+          <p>Reconocible en el aula cuando el estudiante puede repetir la definición, pero no puede explicarla con sus propias palabras.</p>
+        </div>
+        <div class="col-panel good">
+          <span class="panel-label">✓ Aprendizaje profundo</span>
+          <p>El estudiante intenta <strong>comprender la intención</strong> — busca el significado, conecta con conocimientos previos, evalúa la evidencia, construye una representación mental propia.</p>
+          <p>Reconocible cuando el estudiante puede aplicar el concepto a situaciones nuevas que no ha visto antes.</p>
+        </div>
+      </div>
+
+      <p class="no-indent">Esta distinción es crítica para el tutor porque el enfoque del estudiante no es aleatorio: está influenciado directamente por cómo se le presenta la tarea. Las preguntas que hace el tutor, el tipo de ejercicios que propone, la manera en que retroalimenta los errores — todo eso empuja al estudiante hacia uno u otro tipo de aprendizaje.</p>
+
+      <div class="callout">
+        <span class="callout-label">Para reflexionar</span>
+        <p>Piensa en tu último estudiante. Las preguntas que le hiciste durante la sesión, ¿lo invitaban a recordar información o a construir significado? ¿Le preguntaste "¿recuerdas cómo se hace?" o "¿por qué crees que funciona así?"</p>
+      </div>
+
+      <h2>El constructivismo y la arquitectura del saber</h2>
+
+      <p>La teoría que más ha transformado nuestra comprensión del aprendizaje en los últimos cien años tiene un nombre técnico intimidante pero una idea central sorprendentemente simple: el <span class="key-term">constructivismo</span>. Desarrollado a partir de los trabajos de Jean Piaget y profundizado por Lev Vygotsky, el constructivismo sostiene que el aprendizaje no es recepción pasiva de información, sino construcción activa de conocimiento.</p>
+
+      <p>Cuando un estudiante aprende algo nuevo, no lo deposita en un espacio vacío de su memoria. Lo conecta — o intenta conectar — con lo que ya sabe. El conocimiento previo no es un obstáculo ni un punto de partida neutro: es la arquitectura sobre la cual se construye todo lo nuevo. Un estudiante que tiene concepciones erróneas sobre cómo funciona la electricidad no aprenderá correctamente el modelo del circuito simplemente escuchando la explicación correcta. Su modelo mental incorrecto tomará la información nueva y la reinterpretará para que encaje con lo que ya cree.</p>
+
+      <div class="theory-box" data-label="Marco teórico">
+        <h4>El constructivismo social (Vygotsky, 1934)</h4>
+        <p>Vygotsky añade una dimensión que Piaget no había enfatizado suficientemente: el aprendizaje es fundamentalmente <strong>social</strong>. No ocurre en el interior solitario de la mente, sino en la interacción entre personas. El tutor no es un transmisor de información — es el interlocutor que hace posible que el estudiante construya comprensión que no podría construir solo.</p>
+        <p>Este es el origen del concepto de <strong>Zona de Desarrollo Próximo (ZDP)</strong>, que exploraremos en profundidad en la Unidad 2: el espacio entre lo que el estudiante puede hacer solo y lo que puede hacer con ayuda apropiada. La tutoría existe, precisamente, para habitar ese espacio.</p>
+      </div>
+
+      <h2>El mito del "buen explicador"</h2>
+
+      <p>Si el aprendizaje es construcción activa y social, se vuelve evidente por qué la habilidad de explicar con claridad — aunque es valiosa — es insuficiente para garantizar aprendizaje. Una explicación, por brillante que sea, es un monólogo. El monólogo más elaborado no puede, por definición, adaptarse a las concepciones específicas del estudiante frente a ti, responder a sus confusiones en tiempo real, ni verificar si la comprensión que se está construyendo es la correcta.</p>
+
+      <p>Hay tutores que confunden el éxito propio con el éxito del estudiante. Cuando terminan una sesión sintiéndose satisfechos — "expliqué muy bien, usé buenos ejemplos, el estudiante asentía" — asumen que el aprendizaje ocurrió. Esta trampa tiene un nombre en la investigación educativa: <span class="key-term">ilusión de la enseñanza</span>. El tutor observa su propia actuación y la califica como exitosa, sin medir si el estudiante aprendió.</p>
+
+      <div class="figure">
+        <table>
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>¿Evidencia aprendizaje?</th>
+              <th>Por qué</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>El estudiante asiente durante la explicación</td>
+              <td>No</td>
+              <td>Asentir es una conducta social, no cognitiva</td>
+            </tr>
+            <tr>
+              <td>El estudiante dice "entendí"</td>
+              <td>Débilmente</td>
+              <td>La metacognición en aprendizaje novato es poco fiable</td>
+            </tr>
+            <tr>
+              <td>El estudiante resuelve el mismo ejercicio que se practicó</td>
+              <td>Parcialmente</td>
+              <td>Puede ser imitación procedimental sin comprensión</td>
+            </tr>
+            <tr>
+              <td>El estudiante explica el concepto con sus propias palabras</td>
+              <td>Sí</td>
+              <td>Requiere construcción interna de significado</td>
+            </tr>
+            <tr>
+              <td>El estudiante aplica el concepto a un problema nuevo</td>
+              <td>Sí, fuerte</td>
+              <td>Evidencia transferencia — el indicador más robusto</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 1.1 — Indicadores de aprendizaje y su validez como evidencia de comprensión real</span>
+      </div>
+
+      <h2>¿Entonces qué es enseñar?</h2>
+
+      <p>Enseñar, entendido desde la perspectiva que adoptará este programa, es el conjunto de acciones deliberadas que un tutor realiza para que <em>otro</em> construya comprensión. No es performance, no es transmisión, no es demostración. Es diseño: diseño del tipo de preguntas que se harán, de los problemas que se propondrán, de la secuencia en que se presentarán los conceptos, de la manera en que se retroalimentarán los errores.</p>
+
+      <ul class="concept-list">
+        <li>
+          <span class="c-num">1</span>
+          <div class="c-body">
+            <strong>Enseñar es activar al estudiante</strong>
+            <p>El aprendizaje ocurre en la mente del estudiante, no en la boca del tutor. La proporción de tiempo en que el estudiante piensa activamente en la sesión es más determinante que la claridad de las explicaciones del tutor.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">2</span>
+          <div class="c-body">
+            <strong>Enseñar es diagnosticar en tiempo real</strong>
+            <p>Un tutor eficaz monitorea constantemente el estado de comprensión del estudiante — a través de preguntas, de la observación del proceso de resolución, del análisis de los errores — y ajusta en función de lo que observa.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">3</span>
+          <div class="c-body">
+            <strong>Enseñar es construir desde lo que el estudiante ya sabe</strong>
+            <p>Toda nueva comprensión se ancla en conocimiento previo. El tutor que no indaga qué sabe el estudiante antes de enseñar, construye sobre cimientos desconocidos.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">4</span>
+          <div class="c-body">
+            <strong>Enseñar es dar responsabilidad progresiva</strong>
+            <p>El objetivo de toda tutoría es su propia obsolescencia: que el estudiante pueda hacer cada vez más sin la ayuda del tutor. Las intervenciones del tutor deben decrecer en proporción al avance del estudiante.</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="pull-quote">
+        <p>El tutor que lo explica todo le quita al estudiante la única cosa que importa: la oportunidad de construirlo él mismo.</p>
+        <span class="attribution">— Principio TeachSmart</span>
+      </div>
+
+      <h2>Implicaciones para la práctica cotidiana</h2>
+
+      <p>Estas ideas no son puramente teóricas. Tienen consecuencias prácticas inmediatas en cómo se diseña y conduce una sesión de tutoría. Un tutor que entiende que enseñar es construcción activa hará preguntas antes de explicar, para evaluar el estado de comprensión del estudiante. Usará el error no como señal de fracaso sino como dato diagnóstico que revela cómo está construyendo el conocimiento el estudiante. Dedicará tiempo a verificar comprensión, no solo a presentar contenido.</p>
+
+      <p>Un tutor que entiende que el aprendizaje es social reconocerá que la calidad de la relación con el estudiante no es un lujo adicional a la "parte académica" de la tutoría — es parte constitutiva del proceso de aprendizaje. El estrés, la vergüenza de equivocarse, la falta de confianza: todos estos estados afectan directamente la capacidad cognitiva disponible para aprender.</p>
+
+      <blockquote>
+        <p>El aprendizaje no es un fenómeno puramente cognitivo. Es cognitivo, social y emocional al mismo tiempo, y ninguno de estos tres aspectos puede separarse de los otros sin empobrecer el proceso.</p>
+        <cite>— Mary Helen Immordino-Yang, neurociencia educativa, 2016</cite>
+      </blockquote>
+
+      <p>En los artículos que siguen, exploraremos los marcos teóricos y las herramientas prácticas que emergen de esta comprensión de la enseñanza. Pero ninguna herramienta funcionará si no se opera desde la mentalidad correcta — y esa mentalidad comienza exactamente aquí: en reconocer que enseñar no es explicar, y que el protagonista de la sesión no es el tutor. Es el estudiante.</p>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>Enseñar es el conjunto de acciones deliberadas que generan condiciones para que <em>otro</em> construya comprensión. La claridad de las explicaciones del tutor es necesaria pero no suficiente. El indicador más fiable de aprendizaje es la capacidad del estudiante de aplicar lo aprendido a situaciones nuevas.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" disabled>← Anterior</button>
+        <div class="progress-track">
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+        </div>
+        <button class="nav-btn primary" onclick="show(1)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- ARTÍCULO 1.2 -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <article class="article" id="art-1">
+
+      <div class="cover-line">Unidad 1 · Artículo 1.2</div>
+      <h1 class="article-title">La mentalidad de <em>crecimiento</em> en la tutoría</h1>
+      <p class="article-subtitle">Por qué lo que el tutor cree sobre la inteligencia de sus estudiantes determina, más que cualquier otra variable, sus posibilidades de aprendizaje.</p>
+
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>14 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>5</strong></span>
+        <span class="meta-item">Nivel: <strong>Fundacional</strong></span>
+      </div>
+
+      <div class="tag-list">
+        <span class="tag">Carol Dweck</span>
+        <span class="tag">growth mindset</span>
+        <span class="tag">expectativas del tutor</span>
+        <span class="tag">elogio del esfuerzo</span>
+        <span class="tag">efecto Pygmalion</span>
+      </div>
+
+      <p class="drop-cap">En 1998, la psicóloga de Stanford Carol Dweck llevó a cabo una serie de experimentos que producirían uno de los hallazgos más replicados y más malentendidos de la psicología educativa contemporánea. El estudio era sencillo: niños de diez años resolvían un conjunto de problemas de inteligencia moderadamente difíciles. Después, a la mitad de ellos se les elogiaba por su inteligencia — "Eres muy listo." A la otra mitad, se les elogiaba por su esfuerzo — "Trabajaste muy duro en esto."</p>
+
+      <p>Acto seguido, se les ofrecía a los niños elegir la dificultad de la siguiente tarea: una fácil, donde seguramente lo harían bien, o una difícil, donde aprenderían algo nuevo pero podrían fallar. Los resultados fueron tajantes: el 67% de los niños elogiados por su inteligencia eligió la tarea fácil. El 92% de los elogiados por su esfuerzo eligió la difícil.</p>
+
+      <p>Un solo elogio — diferente solo en su objeto — había generado orientaciones radicalmente diferentes hacia el aprendizaje.</p>
+
+      <h2>Las dos mentalidades</h2>
+
+      <p>El marco conceptual que Dweck desarrolló a partir de décadas de investigación distingue dos <span class="key-term">teorías implícitas de la inteligencia</span> que las personas sostienen, a menudo sin saberlo conscientemente.</p>
+
+      <div class="two-col">
+        <div class="col-panel bad">
+          <span class="panel-label">Mentalidad fija (Fixed mindset)</span>
+          <p>La inteligencia es una <strong>capacidad fija</strong>, innata, que se tiene o no se tiene. El talento es el factor determinante del éxito. El esfuerzo implica que no eres suficientemente inteligente — los listos de verdad no necesitan esforzarse.</p>
+          <p>Consecuencia: evitar los desafíos (para no revelar limitaciones), abandonar ante la dificultad, ignorar el feedback crítico, sentirse amenazado por el éxito de otros.</p>
+        </div>
+        <div class="col-panel good">
+          <span class="panel-label">Mentalidad de crecimiento (Growth mindset)</span>
+          <p>La inteligencia es <strong>maleable y desarrollable</strong>. Las capacidades se construyen con esfuerzo, práctica y buenas estrategias. El talento es el punto de partida, no el destino.</p>
+          <p>Consecuencia: abrazar los desafíos, persistir ante la dificultad, usar el feedback como información, encontrar inspiración en el éxito de otros.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Distinción importante</span>
+        <p>La mentalidad de crecimiento no afirma que todos tienen el mismo potencial ni que el esfuerzo lo puede todo. Afirma que las personas pueden desarrollar sus capacidades — y que creer eso tiene consecuencias reales sobre lo que logran. No es un eslogan motivacional. Es una hipótesis respaldada por evidencia empírica.</p>
+      </div>
+
+      <h2>El tutor también tiene una mentalidad</h2>
+
+      <p>El error más frecuente al aplicar las ideas de Dweck al contexto de la tutoría es centrarse solo en la mentalidad del <em>estudiante</em>. Pero el tutor también sostiene, consciente o inconscientemente, una teoría sobre si sus estudiantes pueden crecer. Y esta teoría filtra todo: el nivel de dificultad de los ejercicios que propone, la manera en que responde cuando el estudiante falla, la cantidad de tiempo que invierte en los estudiantes "difíciles", la energía con la que trabaja cuando el progreso es lento.</p>
+
+      <p>Un tutor con mentalidad fija tenderá a interpretar el bajo rendimiento como evidencia de limitación permanente. Simplificará las tareas en lugar de andamiar el proceso. Consolará al estudiante en lugar de retarlo. Y, lo que es más dañino, transmitirá — a veces sin palabras — la idea de que ese estudiante "no es de los que pueden".</p>
+
+      <div class="pull-quote">
+        <p>Los maestros que creen que la inteligencia es fija enseñan de manera diferente — y sus estudiantes aprenden menos. Esto no es opinión. Está documentado.</p>
+        <span class="attribution">— Carol Dweck, Mindset: The New Psychology of Success, 2006</span>
+      </div>
+
+      <h2>El efecto Pygmalion en la tutoría</h2>
+
+      <p>En 1968, Robert Rosenthal y Lenore Jacobson publicaron el estudio Pygmalion in the Classroom, uno de los más citados y más debatidos de la psicología social educativa. Informaron a maestros de primaria, falsamente, que ciertos estudiantes de sus clases habían obtenido puntajes excepcionalmente altos en una prueba de "potencial intelectual" y estaban a punto de "florecer". Ocho meses después, los estudiantes designados como prometedores — elegidos al azar — mostraban ganancias reales y significativas en pruebas de CI.</p>
+
+      <p>Las expectativas de los maestros habían producido cambios reales en el rendimiento de los estudiantes. A este fenómeno se lo conoce como <span class="key-term">profecía autocumplida</span> o efecto Rosenthal-Jacobson. Aunque el estudio ha sido criticado y matizado con el paso de los años, la evidencia acumulada de décadas de investigación posterior es consistente: las expectativas del docente tienen efectos medibles sobre el aprendizaje.</p>
+
+      <div class="theory-box" data-label="Mecanismo">
+        <h4>¿Cómo se transmiten las expectativas?</h4>
+        <p>Jere Brophy y Tom Good (1970) identificaron cuatro canales conductuales a través de los cuales los maestros comunican sus expectativas a los estudiantes sin darse cuenta:</p>
+        <p><strong>Clima:</strong> crean un ambiente emocional más cálido para los estudiantes de los que esperan más. <strong>Retroalimentación:</strong> dan más feedback específico y útil a quienes consideran más capaces. <strong>Input:</strong> enseñan más material, más complejo, con más profundidad a los "prometedores". <strong>Output:</strong> dan más tiempo y más oportunidades de responder a los estudiantes que perciben como competentes.</p>
+        <p>Estas diferencias conductuales son, con frecuencia, imperceptibles para el docente mismo.</p>
+      </div>
+
+      <h2>Elogiar bien: la diferencia que cambia todo</h2>
+
+      <p>El hallazgo más inmediatamente aplicable de la investigación de Dweck es la distinción entre dos tipos de elogio. No todos los elogios son iguales: algunos nutren la mentalidad de crecimiento y otros la socavan activamente.</p>
+
+      <ul class="concept-list">
+        <li>
+          <span class="c-num">✕</span>
+          <div class="c-body">
+            <strong>Elogio del resultado o de la capacidad</strong>
+            <p>"Eres muy inteligente." "Se te da muy bien." "Eres un genio en esto." Este tipo de elogio vincula el éxito a una característica fija de la persona. Cuando el estudiante enfrente dificultad, la pondrá en duda. Lo hace frágil.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">✓</span>
+          <div class="c-body">
+            <strong>Elogio del proceso, estrategia o esfuerzo</strong>
+            <p>"Usaste una estrategia muy inteligente." "Me gusta cómo lo intentaste de otra manera cuando el primero no funcionó." "Ese esfuerzo se nota." Este elogio vincula el éxito a factores que el estudiante controla. Lo hace resiliente.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">✓</span>
+          <div class="c-body">
+            <strong>El poder del "todavía"</strong>
+            <p>Cuando un estudiante dice "no puedo", el tutor que opera desde mentalidad de crecimiento responde: "Todavía no puedes." Una sola palabra convierte un estado permanente en un punto en un proceso. "No lo entiendo todavía." "Aún no lo domino." "Estoy trabajando en eso."</p>
+          </div>
+        </li>
+      </ul>
+
+      <h2>Mentalidad de crecimiento y dificultad: el caso del error</h2>
+
+      <p>La manera en que el tutor responde al error del estudiante es uno de los marcadores más reveladores de su mentalidad. Desde una perspectiva de mentalidad fija, el error es evidencia de incompetencia — algo que debe corregirse rápidamente y de lo que no hay mucho que aprender. Desde una perspectiva de crecimiento, el error es la información más valiosa disponible en la sesión.</p>
+
+      <p>El error revela exactamente dónde se rompió la comprensión, qué modelo mental incorrecto está operando, qué concepto previo falta o está mal construido. Un tutor que recibe el error con indiferencia, frustración o corrección inmediata desperdicia el único momento en que tiene acceso directo al estado real de comprensión del estudiante.</p>
+
+      <blockquote>
+        <p>Dime cuáles son los errores de tu estudiante y te diré qué necesita aprender. Dime cómo los tratas y te diré qué tipo de tutor eres.</p>
+        <cite>— Principio TeachSmart</cite>
+      </blockquote>
+
+      <h2>La mentalidad de crecimiento en el tutor mismo</h2>
+
+      <p>Finalmente, la mentalidad de crecimiento no es solo una herramienta para trabajar con estudiantes — es una actitud que el tutor debe sostener hacia sí mismo. El oficio de enseñar se aprende, se desarrolla, se refina con práctica deliberada. Un tutor que considera que sus habilidades pedagógicas son fijas — "explico bien o no explico bien, y eso es todo" — difícilmente invertirá en el trabajo reflexivo que genera desarrollo profesional real.</p>
+
+      <p>Las sesiones que no funcionaron, los estudiantes con quienes no logramos avanzar, las explicaciones que nadie entendió — todo esto es datos. El tutor con mentalidad de crecimiento los analiza, extrae lecciones y los convierte en mejoras concretas para la próxima sesión.</p>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>La mentalidad del tutor sobre la inteligencia y el potencial de sus estudiantes filtra, a menudo de manera invisible, cada una de sus acciones pedagógicas. La mentalidad de crecimiento no es un eslogan — es una hipótesis empíricamente respaldada con consecuencias concretas sobre cómo se elogia, cómo se responde al error, cómo se diseña la dificultad, y cómo se invierte el tiempo y la energía con cada estudiante.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(0)">← Anterior</button>
+        <div class="progress-track">
+          <div class="progress-dot done"></div>
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+        </div>
+        <button class="nav-btn primary" onclick="show(2)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- ARTÍCULO 1.3 -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <article class="article" id="art-2">
+
+      <div class="cover-line">Unidad 1 · Artículo 1.3</div>
+      <h1 class="article-title">Taxonomía de <em>Bloom:</em> del saber al hacer</h1>
+      <p class="article-subtitle">El mapa más útil que existe para entender qué tipo de aprendizaje estás generando — y por qué la mayoría de las tutorías operan solo en los niveles más bajos.</p>
+
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>13 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>6</strong></span>
+        <span class="meta-item">Nivel: <strong>Fundacional</strong></span>
+      </div>
+
+      <div class="tag-list">
+        <span class="tag">Taxonomía de Bloom</span>
+        <span class="tag">niveles cognitivos</span>
+        <span class="tag">objetivos de aprendizaje</span>
+        <span class="tag">pensamiento de orden superior</span>
+        <span class="tag">Anderson & Krathwohl</span>
+      </div>
+
+      <p class="drop-cap">En 1956, un comité de psicólogos educativos liderado por Benjamin Bloom publicó un documento que se convertiría en uno de los marcos de referencia más influyentes de toda la historia de la pedagogía. Su objetivo original era modesto: crear un sistema de clasificación de los objetivos educativos que permitiera a los investigadores comunicarse con mayor precisión. Lo que produjo fue, accidentalmente, una de las herramientas más útiles que un tutor puede tener en su repertorio.</p>
+
+      <p>La <span class="key-term">Taxonomía de Bloom</span> — revisada en 2001 por Anderson y Krathwohl — describe seis niveles de procesamiento cognitivo, organizados desde los más simples hasta los más complejos. Comprender esta jerarquía cambia fundamentalmente la manera en que un tutor diseña sus sesiones, formula sus preguntas y evalúa el aprendizaje.</p>
+
+      <h2>Los seis niveles</h2>
+
+      <div class="bloom-pyramid">
+        <div class="bloom-level" style="width:90%;background:#2a6049;">
+          <span class="level-name">Crear</span>
+          <span class="level-desc">Producir algo nuevo a partir del conocimiento</span>
+          <span class="level-verbs">diseñar · construir · proponer</span>
+        </div>
+        <div class="bloom-level" style="width:82%;background:#3d7a5c;">
+          <span class="level-name">Evaluar</span>
+          <span class="level-desc">Juzgar con criterios propios</span>
+          <span class="level-verbs">argumentar · justificar · criticar</span>
+        </div>
+        <div class="bloom-level" style="width:74%;background:#c4430a;">
+          <span class="level-name">Analizar</span>
+          <span class="level-desc">Descomponer y ver relaciones internas</span>
+          <span class="level-verbs">comparar · diferenciar · estructurar</span>
+        </div>
+        <div class="bloom-level" style="width:66%;background:#d4621e;">
+          <span class="level-name">Aplicar</span>
+          <span class="level-desc">Usar el conocimiento en situaciones nuevas</span>
+          <span class="level-verbs">resolver · demostrar · usar</span>
+        </div>
+        <div class="bloom-level" style="width:58%;background:#e8a020;">
+          <span class="level-name">Comprender</span>
+          <span class="level-desc">Interpretar y construir significado</span>
+          <span class="level-verbs">explicar · parafrasear · clasificar</span>
+        </div>
+        <div class="bloom-level" style="width:50%;background:#a89e90;">
+          <span class="level-name">Recordar</span>
+          <span class="level-desc">Recuperar información de la memoria</span>
+          <span class="level-verbs">listar · nombrar · definir</span>
+        </div>
+      </div>
+
+      <p class="no-indent">Es importante no leer esta pirámide como un juicio de valor absoluto — los niveles más bajos son necesarios e irremplazables. No se puede analizar lo que no se recuerda. No se puede evaluar lo que no se comprende. La pirámide describe una secuencia lógica, no una jerarquía de importancia.</p>
+
+      <h2>El problema de la tutoría que se queda abajo</h2>
+
+      <p>La utilidad clínica de la Taxonomía de Bloom para el tutor reside en que permite diagnosticar en qué nivel está operando la sesión. Y el diagnóstico suele ser revelador: la gran mayoría de las sesiones de tutoría transcurren casi exclusivamente en los dos niveles inferiores.</p>
+
+      <p>El tutor explica — el estudiante recuerda. El tutor pide que repita el procedimiento — el estudiante lo repite. La sesión termina habiendo cubierto el tema, pero sin que el estudiante haya necesitado pensar de manera compleja en ningún momento. El estudiante ha memorizado pasos, no construido comprensión.</p>
+
+      <div class="callout">
+        <span class="callout-label">Señal diagnóstica</span>
+        <p>¿Cuántas de las preguntas que le hiciste a tu estudiante en la última sesión podrían responderse con "sí", "no", o con la repetición de algo que tú ya habías dicho? Si la respuesta es "la mayoría", estás operando en los niveles de Recordar y Comprender casi exclusivamente. No es un fracaso — es un punto de partida para mejorar.</p>
+      </div>
+
+      <h2>Subir de nivel: cómo formular preguntas de alto orden cognitivo</h2>
+
+      <p>La herramienta más poderosa para mover el aprendizaje hacia niveles superiores es la pregunta. No cualquier pregunta: preguntas que requieran que el estudiante procese activamente en el nivel deseado. La diferencia entre una pregunta de nivel bajo y una de nivel alto no está en el tema — está en lo que el estudiante tiene que hacer mentalmente para responder.</p>
+
+      <div class="figure">
+        <table>
+          <thead>
+            <tr><th>Nivel</th><th>Pregunta de bajo nivel</th><th>Pregunta de alto nivel</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Matemáticas — fracciones</td>
+              <td>"¿Cuánto es 1/2 + 1/4?"</td>
+              <td>"¿Por qué no puedes simplemente sumar los denominadores? ¿Qué está pasando conceptualmente?"</td>
+            </tr>
+            <tr>
+              <td>Historia — Revolución francesa</td>
+              <td>"¿En qué año fue la Revolución Francesa?"</td>
+              <td>"¿Qué condiciones habrían tenido que ser distintas para que la Revolución no ocurriera?"</td>
+            </tr>
+            <tr>
+              <td>Biología — fotosíntesis</td>
+              <td>"¿Qué produce la fotosíntesis?"</td>
+              <td>"Una planta en un cuarto sin ventanas sigue viva tres días. ¿Qué conclusiones puedes sacar sobre la fotosíntesis a partir de eso?"</td>
+            </tr>
+            <tr>
+              <td>Comprensión lectora</td>
+              <td>"¿Qué hizo el personaje al final?"</td>
+              <td>"El autor terminó el relato de esta manera. ¿Por qué crees que eligió ese final y no otro?"</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 1.3 — Transformación de preguntas por nivel taxonómico</span>
+      </div>
+
+      <h2>Diseñar hacia arriba: la secuencia correcta</h2>
+
+      <p>Un error común al conocer la Taxonomía es intentar "saltar" a los niveles superiores demasiado rápido, sin haber construido la base de los niveles inferiores. Un estudiante que no recuerda los conceptos básicos no puede analizarlos. Un estudiante que no comprende el principio no puede aplicarlo. La pirámide describe una secuencia de dependencia, no solo de complejidad.</p>
+
+      <p>La pregunta que el tutor debe hacerse al diseñar una sesión no es "¿cómo llego al nivel más alto posible?" sino "¿desde dónde estoy y cuál es el siguiente nivel alcanzable para este estudiante hoy?" El progreso hacia arriba en la pirámide es gradual y requiere que cada nivel esté suficientemente construido antes de avanzar al siguiente.</p>
+
+      <div class="theory-box" data-label="Revisión 2001">
+        <h4>Anderson & Krathwohl: la versión revisada</h4>
+        <p>En 2001, Lorin Anderson (exalumno de Bloom) y David Krathwohl publicaron una revisión significativa de la Taxonomía. Los cambios más importantes fueron dos: los nombres de los niveles se convirtieron en verbos ("Conocimiento" → "Recordar"; "Síntesis" → "Crear"), enfatizando que los niveles describen procesos activos, no estados. Y se invirtieron los dos niveles superiores: Crear (antes Síntesis) subió al tope de la pirámide, por encima de Evaluar.</p>
+        <p>En este programa usamos la versión revisada de 2001, que es la de mayor uso en la investigación educativa contemporánea.</p>
+      </div>
+
+      <h2>La Taxonomía como herramienta de evaluación</h2>
+
+      <p>Más allá del diseño de preguntas, la Taxonomía de Bloom es una herramienta de evaluación extraordinariamente útil. Permite al tutor responder una pregunta que de otra manera es casi imposible: ¿qué sabe realmente este estudiante, y hasta qué profundidad?</p>
+
+      <p>Un estudiante puede pasar con comodidad el nivel de Recordar — reproducir definiciones, fórmulas, fechas — y fallar completamente en el nivel de Aplicar. Esto revela que el aprendizaje ocurrido es superficial: hay información almacenada, pero no hay comprensión suficiente para transferirla a situaciones nuevas. Para el tutor, este diagnóstico es actionable: sabe exactamente qué construir a continuación.</p>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>La Taxonomía de Bloom describe seis niveles de procesamiento cognitivo, desde Recordar hasta Crear. La mayoría de las tutorías operan en los niveles inferiores. El tutor que conoce la Taxonomía puede diagnosticar el nivel en que está operando la sesión, formular preguntas que empujen hacia niveles superiores, y evaluar con precisión la profundidad real del aprendizaje de su estudiante.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(1)">← Anterior</button>
+        <div class="progress-track">
+          <div class="progress-dot done"></div>
+          <div class="progress-dot done"></div>
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+        </div>
+        <button class="nav-btn primary" onclick="show(3)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- ARTÍCULO 1.4 -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <article class="article" id="art-3">
+
+      <div class="cover-line">Unidad 1 · Artículo 1.4</div>
+      <h1 class="article-title">El tutor como <em>diseñador</em> de experiencias</h1>
+      <p class="article-subtitle">El modelo TeachSmart y el cambio de paradigma que convierte al tutor de conferencista en arquitecto del aprendizaje.</p>
+
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>11 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>4</strong></span>
+        <span class="meta-item">Nivel: <strong>Integrador</strong></span>
+      </div>
+
+      <div class="tag-list">
+        <span class="tag">modelo TeachSmart</span>
+        <span class="tag">diseño instruccional</span>
+        <span class="tag">aprendizaje activo</span>
+        <span class="tag">responsabilidad pedagógica</span>
+        <span class="tag">tutor de alto impacto</span>
+      </div>
+
+      <p class="drop-cap">Los tres artículos anteriores de esta unidad han construido un argumento acumulativo: que el aprendizaje es construcción activa y no recepción pasiva; que las expectativas del tutor sobre el potencial del estudiante tienen efectos reales sobre lo que este logra; y que existe una jerarquía de complejidad cognitiva que permite diagnosticar y diseñar el tipo de aprendizaje que se está generando. Es momento de integrar estas ideas en un modelo de práctica.</p>
+
+      <p>El <span class="key-term">modelo TeachSmart</span> no es una metodología rígida ni una secuencia de pasos que se sigue mecánicamente. Es un marco de pensamiento — una manera de pararse frente a la tutoría que integra los principios pedagógicos explorados y los convierte en criterios de decisión prácticos.</p>
+
+      <h2>El cambio de paradigma: de conferencista a arquitecto</h2>
+
+      <p>La metáfora más útil para capturar el cambio que este programa propone es la del arquitecto. Un arquitecto no construye el edificio él mismo — diseña el espacio en que la vida ocurrirá. Define las dimensiones, las proporciones, las relaciones entre los espacios, los materiales, la luz. Crea las condiciones para que algo valioso pueda suceder.</p>
+
+      <p>El tutor de alto impacto hace lo mismo. No enseña <em>a</em> sus estudiantes — diseña las condiciones en que sus estudiantes aprenden. Selecciona los problemas correctos. Formula las preguntas que abren el pensamiento. Estructura la secuencia con la que se presenta el conocimiento. Diseña el nivel correcto de dificultad. Gestiona el error de manera que genere comprensión en lugar de frustración.</p>
+
+      <div class="pull-quote">
+        <p>El tutor que trabaja más que su estudiante durante la sesión no está enseñando mejor. Está haciendo el trabajo que le corresponde al estudiante.</p>
+        <span class="attribution">— Principio TeachSmart</span>
+      </div>
+
+      <h2>Los cuatro compromisos del modelo TeachSmart</h2>
+
+      <ul class="concept-list">
+        <li>
+          <span class="c-num">1</span>
+          <div class="c-body">
+            <strong>Compromiso con el diagnóstico</strong>
+            <p>Ningún proceso de enseñanza comienza con contenido. Comienza con el estudiante. Antes de diseñar una sesión, antes de seleccionar un ejercicio, antes de elegir un nivel de dificultad, el tutor TeachSmart invierte tiempo en comprender el estado actual de conocimiento, los vacíos conceptuales, las fortalezas y las barreras del estudiante específico frente a él.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">2</span>
+          <div class="c-body">
+            <strong>Compromiso con el diseño</strong>
+            <p>La sesión no es improvisada. Tiene una estructura pedagógicamente justificada, con objetivos claros, secuencia deliberada, actividades diseñadas para generar el tipo específico de pensamiento que se quiere desarrollar, y mecanismos de verificación de comprensión distribuidos a lo largo de toda la sesión.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">3</span>
+          <div class="c-body">
+            <strong>Compromiso con el ajuste en tiempo real</strong>
+            <p>El plan de sesión es un punto de partida, no un contrato. El tutor TeachSmart monitorea constantemente la comprensión del estudiante y ajusta su intervención en función de lo que observa. Si el estudiante entiende más rápido de lo previsto, avanza. Si encuentra dificultades imprevistas, pivota. La fidelidad al plan nunca supera la fidelidad al aprendizaje.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">4</span>
+          <div class="c-body">
+            <strong>Compromiso con la evidencia</strong>
+            <p>El tutor TeachSmart no asume que el aprendizaje ocurrió porque la explicación fue buena. Verifica. Utiliza indicadores observables — el estudiante explica con sus palabras, resuelve un problema nuevo, anticipa el siguiente paso — para confirmar que la comprensión se ha construido. Solo la evidencia de aprendizaje cierra el ciclo de la enseñanza.</p>
+          </div>
+        </li>
+      </ul>
+
+      <h2>El ciclo de la tutoría de alto impacto</h2>
+
+      <p>Los cuatro compromisos no son actividades discretas sino momentos de un ciclo continuo que opera en cada sesión y a lo largo del proceso completo de acompañamiento. El ciclo comienza en el diagnóstico, avanza al diseño, se ejecuta con atención al ajuste, y se cierra con la recolección de evidencia que alimenta el siguiente ciclo diagnóstico.</p>
+
+      <div class="figure">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--rule);">
+          <div style="background:var(--paper2);padding:20px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--accent);margin-bottom:8px;">FASE 1 · DIAGNÓSTICO</div>
+            <p style="font-size:14px;color:var(--ink2);line-height:1.6;margin:0;">¿Qué sabe el estudiante? ¿Qué no sabe? ¿Qué cree saber pero en realidad no sabe? ¿Qué barreras enfrenta hoy?</p>
+          </div>
+          <div style="background:var(--paper2);padding:20px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--accent3);margin-bottom:8px;">FASE 2 · DISEÑO</div>
+            <p style="font-size:14px;color:var(--ink2);line-height:1.6;margin:0;">¿Qué objetivo tiene esta sesión? ¿Qué secuencia didáctica? ¿Qué tipo de actividades? ¿Qué nivel de dificultad?</p>
+          </div>
+          <div style="background:var(--paper2);padding:20px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--accent2);margin-bottom:8px;">FASE 3 · EJECUCIÓN Y AJUSTE</div>
+            <p style="font-size:14px;color:var(--ink2);line-height:1.6;margin:0;">¿Está funcionando el plan? ¿Qué está revelando el comportamiento del estudiante? ¿Qué necesita ajustarse ahora?</p>
+          </div>
+          <div style="background:var(--paper2);padding:20px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:#2a5080;margin-bottom:8px;">FASE 4 · EVIDENCIA</div>
+            <p style="font-size:14px;color:var(--ink2);line-height:1.6;margin:0;">¿Qué evidencia tengo de que el aprendizaje ocurrió? ¿Qué información alimentará el próximo ciclo diagnóstico?</p>
+          </div>
+        </div>
+        <span class="figure-caption">Figura 1.4 — El ciclo de la tutoría de alto impacto en el modelo TeachSmart</span>
+      </div>
+
+      <h2>Alta responsabilidad pedagógica</h2>
+
+      <p>El concepto de <span class="key-term">responsabilidad pedagógica</span> es central en el modelo TeachSmart. Significa que el tutor acepta que el aprendizaje — o la falta de él — es información sobre la calidad de su intervención, no solo sobre las capacidades del estudiante.</p>
+
+      <p>Esto no es una afirmación ingenua: hay factores fuera del control del tutor. Pero la postura de alta responsabilidad pedagógica rechaza el hábito — frecuente y comprensible — de atribuir los fracasos del aprendizaje exclusivamente al estudiante. "Es que no estudia", "es que no presta atención", "es que no tiene base" — todas estas afirmaciones pueden ser ciertas, pero ninguna es accionable para el tutor si no van seguidas de una pregunta: ¿qué puedo hacer yo diferente para cambiar esta situación?</p>
+
+      <blockquote>
+        <p>Un tutor que culpa solo al estudiante cuando el aprendizaje no ocurre es como un médico que culpa al paciente por no mejorar. Puede que haya algo de verdad en ello. Pero el profesional es el que tiene los conocimientos y la responsabilidad de encontrar qué cambiar.</p>
+        <cite>— Adaptado de John Hattie, Visible Learning, 2009</cite>
+      </blockquote>
+
+      <h2>¿Qué hace diferente a un tutor de alto impacto?</h2>
+
+      <p>La investigación de John Hattie, que analizó más de 800 meta-análisis sobre variables que afectan el rendimiento académico, identificó que la calidad del docente/tutor es, por lejos, el factor escolar más determinante del aprendizaje. No los recursos, no el tamaño del grupo, no la tecnología disponible. La calidad del tutor.</p>
+
+      <p>Y lo que distingue a los tutores de alto impacto no es principalmente su dominio del contenido — aunque este importa. Es su <em>forma de pensar sobre la enseñanza</em>. Los tutores más efectivos, según la investigación de Hattie, comparten estas características: monitorean activamente su impacto y ajustan sus estrategias en función de los datos; sostienen altas expectativas de todos sus estudiantes sin excepción; ven los errores como oportunidades de aprendizaje; y hacen visible el pensamiento — el suyo y el del estudiante — durante la sesión.</p>
+
+      <div class="callout">
+        <span class="callout-label">Síntesis de la Unidad 1</span>
+        <p>Enseñar es construcción activa, no transmisión. Las expectativas del tutor tienen efectos reales sobre el aprendizaje del estudiante. La Taxonomía de Bloom permite diagnosticar y diseñar la profundidad cognitiva de la sesión. El modelo TeachSmart integra estos principios en cuatro compromisos: diagnosticar, diseñar, ajustar en tiempo real y verificar con evidencia. El tutor de alto impacto no es el que más explica — es el que mejor diseña las condiciones para que su estudiante aprenda.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(2)">← Anterior</button>
+        <div class="progress-track">
+          <div class="progress-dot done"></div>
+          <div class="progress-dot done"></div>
+          <div class="progress-dot done"></div>
+          <div class="progress-dot active"></div>
+        </div>
+        <button class="nav-btn" disabled style="opacity:0.3;cursor:default;">Fin de la unidad</button>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<script>
+  const articles = document.querySelectorAll('.article');
+  const navItems = document.querySelectorAll('.nav-item');
+  const dots = document.querySelectorAll('#progress-dots .progress-dot');
+  let visited = new Set([0]);
+
+  function show(idx) {
+    articles.forEach((a, i) => a.classList.toggle('active', i === idx));
+    navItems.forEach((n, i) => n.classList.toggle('active', i === idx));
+    visited.add(idx);
+    dots.forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i === idx) d.classList.add('active');
+      else if (visited.has(i)) d.classList.add('done');
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
