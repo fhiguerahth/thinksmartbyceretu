@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeachSmart · Unidad 4: Didáctica y el Arte de Simplificar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1a1714;--ink2:#3d3830;--ink3:#7a7066;--paper:#fdf8f2;--paper2:#f5ede0;--paper3:#e8d8c0;--accent:#7a3010;--accent2:#c4600a;--accent3:#2a6049;--rule:#d8c8b0;--serif:'Source Serif 4',Georgia,serif;--display:'Playfair Display',Georgia,serif;--mono:'DM Mono',monospace;--col:680px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.75;font-weight:300;}
+  .site-header{background:var(--ink);padding:0 40px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:2px solid var(--accent2);}
+  .brand{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:white;opacity:.9;}
+  .unit-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:#e8a060;text-transform:uppercase;}
+  .layout{display:flex;min-height:100vh;}
+  .sidebar{width:260px;flex-shrink:0;background:var(--ink);padding:40px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+  .sidebar-section{padding:0 24px 32px;}
+  .sidebar-title{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#5a5048;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #2e2a24;}
+  .nav-item{display:block;padding:9px 12px;margin-bottom:2px;border-radius:4px;cursor:pointer;transition:background .15s,color .15s;border:none;background:none;width:100%;text-align:left;color:#a89e90;font-family:var(--serif);font-size:13.5px;font-weight:300;line-height:1.4;}
+  .nav-item:hover{background:#2a2520;color:white;}
+  .nav-item.active{background:var(--accent2);color:white;font-weight:400;}
+  .nav-item .num{font-family:var(--mono);font-size:10px;opacity:.6;display:block;margin-bottom:2px;}
+  .main{flex:1;min-width:0;padding:60px 80px 120px;}
+  .article{display:none;max-width:var(--col);}
+  .article.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .cover-line{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:16px;}
+  .article-title{font-family:var(--display);font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.1;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;}
+  .article-title em{font-style:italic;color:var(--accent2);}
+  .article-subtitle{font-size:19px;font-weight:300;font-style:italic;color:var(--ink3);margin-bottom:40px;line-height:1.5;border-bottom:1px solid var(--rule);padding-bottom:32px;}
+  .drop-cap::first-letter{font-family:var(--display);font-size:4.8em;font-weight:900;float:left;line-height:.78;margin-right:10px;margin-top:6px;color:var(--accent2);}
+  p{margin-bottom:1.4em;}p+p{text-indent:1.5em;}p+p.no-indent{text-indent:0;}
+  h2{font-family:var(--display);font-size:26px;font-weight:700;color:var(--ink);margin:52px 0 18px;padding-top:8px;border-top:2px solid var(--ink);}
+  .pull-quote{margin:48px -40px;padding:32px 40px;background:var(--ink);position:relative;overflow:hidden;}
+  .pull-quote::before{content:'\201C';font-family:var(--display);font-size:200px;font-weight:900;color:var(--accent2);position:absolute;top:-40px;left:20px;opacity:.1;line-height:1;}
+  .pull-quote p{font-family:var(--display);font-size:22px;font-style:italic;font-weight:700;line-height:1.4;color:white;margin:0;text-indent:0!important;position:relative;z-index:1;}
+  .pull-quote .attribution{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#e8a060;margin-top:12px;display:block;}
+  .callout{border-left:3px solid var(--accent2);padding:20px 24px;margin:32px 0;background:var(--paper2);}
+  .callout .callout-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;display:block;}
+  .callout p{margin:0;font-size:15.5px;line-height:1.65;}
+  .callout p+p{text-indent:0;margin-top:10px;}
+  .theory-box{border:1px solid var(--rule);padding:28px 32px;margin:36px 0;position:relative;background:white;}
+  .theory-box::before{content:attr(data-label);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:white;background:var(--accent3);padding:4px 12px;position:absolute;top:-12px;left:24px;}
+  .theory-box h4{font-family:var(--display);font-size:19px;font-weight:700;margin-bottom:12px;}
+  .theory-box p{font-size:15.5px;margin-bottom:.8em;}
+  .theory-box p:last-child{margin-bottom:0;}
+  .key-term{font-weight:600;border-bottom:1.5px solid var(--accent2);}
+  .concept-list{list-style:none;padding:0;margin:24px 0;}
+  .concept-list li{display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--rule);}
+  .concept-list li:first-child{border-top:1px solid var(--rule);}
+  .concept-list .c-num{font-family:var(--display);font-size:36px;font-weight:900;color:var(--paper3);line-height:1;flex-shrink:0;width:40px;text-align:right;}
+  .concept-list .c-body{flex:1;}
+  .concept-list .c-body strong{font-size:15.5px;font-weight:600;display:block;margin-bottom:4px;}
+  .concept-list .c-body p{font-size:14.5px;margin:0;color:var(--ink2);line-height:1.6;text-indent:0;}
+  .figure{margin:40px 0;padding:28px;background:var(--paper2);border-top:3px solid var(--accent2);}
+  .figure-caption{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink3);margin-top:16px;display:block;}
+  table{width:100%;border-collapse:collapse;margin:28px 0;font-size:14.5px;}
+  th{background:var(--ink);color:white;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:12px 16px;text-align:left;}
+  td{padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--paper2);}
+  blockquote{margin:28px 0;padding:0 0 0 24px;border-left:2px solid var(--accent2);}
+  blockquote p{font-style:italic;font-size:16px;color:var(--ink2);text-indent:0!important;margin:0;}
+  blockquote cite{font-family:var(--mono);font-size:11px;color:var(--ink3);font-style:normal;display:block;margin-top:8px;}
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0;}
+  .tag{font-family:var(--mono);font-size:11px;padding:5px 12px;border:1px solid var(--rule);color:var(--ink3);}
+  .meta-row{display:flex;gap:24px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--rule);}
+  .meta-item{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink3);}
+  .meta-item strong{color:var(--ink2);font-weight:500;}
+  .progress-track{display:flex;gap:6px;align-items:center;}
+  .progress-dot{width:8px;height:8px;border-radius:50%;background:var(--rule);cursor:pointer;transition:background .2s,transform .2s;}
+  .progress-dot.done{background:var(--accent3);}
+  .progress-dot.active{background:var(--accent2);transform:scale(1.3);}
+  .article-footer{margin-top:72px;padding-top:32px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;}
+  .nav-btn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;background:none;border:1px solid var(--rule);padding:10px 20px;color:var(--ink2);transition:all .2s;}
+  .nav-btn:hover{background:var(--ink);color:white;border-color:var(--ink);}
+  .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+  .nav-btn.primary{background:var(--accent2);color:white;border-color:var(--accent2);}
+  .nav-btn.primary:hover{background:var(--ink);border-color:var(--ink);}
+  /* three-level simplification */
+  .levels{display:flex;flex-direction:column;gap:2px;margin:28px 0;}
+  .level-row{display:flex;align-items:stretch;gap:2px;}
+  .level-badge{width:110px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;}
+  .level-badge span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:white;line-height:1.4;}
+  .level-text{flex:1;padding:16px 20px;background:var(--paper2);}
+  .level-text p{font-size:14px;line-height:1.6;color:var(--ink2);margin:0;}
+  /* socratic bank */
+  .sq-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:28px 0;background:var(--rule);}
+  .sq-cell{background:white;padding:18px 20px;}
+  .sq-cell .sq-type{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;display:block;}
+  .sq-cell ul{list-style:none;padding:0;}
+  .sq-cell ul li{font-size:13.5px;color:var(--ink2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--paper2);}
+  .sq-cell ul li:last-child{border-bottom:none;}
+  .sq-cell ul li::before{content:'→ ';color:var(--accent2);font-family:var(--mono);}
+  @media(max-width:900px){.sidebar{display:none;}.main{padding:32px 24px 80px;}.pull-quote{margin:36px -24px;padding:28px 24px;}.sq-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <span class="brand">TEACHSMART</span>
+  <span class="unit-label">Unidad 4 · Didáctica y el Arte de Simplificar</span>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Artículos</div>
+      <button class="nav-item active" onclick="show(0)"><span class="num">4.1</span>La Técnica Feynman</button>
+      <button class="nav-item" onclick="show(1)"><span class="num">4.2</span>El método socrático en la tutoría</button>
+      <button class="nav-item" onclick="show(2)"><span class="num">4.3</span>Analogías y modelos mentales</button>
+      <button class="nav-item" onclick="show(3)"><span class="num">4.4</span>Bruner y la progresión de lo concreto a lo abstracto</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Progreso</div>
+      <div class="progress-track" id="progress-dots">
+        <div class="progress-dot active" onclick="show(0)"></div>
+        <div class="progress-dot" onclick="show(1)"></div>
+        <div class="progress-dot" onclick="show(2)"></div>
+        <div class="progress-dot" onclick="show(3)"></div>
+      </div>
+    </div>
+  </nav>
+  <main class="main">
+
+    <!-- ART 4.1 -->
+    <article class="article active" id="art-0">
+      <div class="cover-line">Unidad 4 · Artículo 4.1</div>
+      <h1 class="article-title">La Técnica <em>Feynman</em></h1>
+      <p class="article-subtitle">El método más eficaz para identificar lo que realmente no se comprende — y convertirlo en la herramienta de aprendizaje más honesta que un tutor puede usar.</p>
+      <div class="meta-row"><span class="meta-item">Lectura estimada: <strong>11 min</strong></span><span class="meta-item">Conceptos clave: <strong>3</strong></span><span class="meta-item">Nivel: <strong>Técnica aplicada</strong></span></div>
+      <div class="tag-list"><span class="tag">Richard Feynman</span><span class="tag">simplificación</span><span class="tag">comprensión profunda</span><span class="tag">metacognición</span></div>
+
+      <p class="drop-cap">Richard Feynman, Premio Nobel de Física en 1965, tenía una obsesión que sus colegas encontraban a la vez admirable e irritante: insistía en que no había comprendido realmente un concepto hasta que podía explicárselo a alguien sin formación científica. No una explicación técnica para expertos — una explicación que cualquier persona inteligente sin el bagaje especializado pudiera seguir. Si no podía hacerlo, concluía que no lo entendía todavía, sin importar cuántas ecuaciones pudiera manipular correctamente.</p>
+      <p>Esta intuición de Feynman captura algo que la psicología cognitiva confirma: existe una diferencia fundamental entre conocer las palabras de una idea y comprender la idea misma. El estudiante que puede reproducir la definición de fotosíntesis no necesariamente comprende el proceso. El que puede explicarlo en términos de qué está pasando realmente — energía, moléculas, transformaciones — probablemente sí lo comprende.</p>
+
+      <h2>Los cuatro pasos de la Técnica Feynman</h2>
+      <ul class="concept-list">
+        <li><span class="c-num">1</span><div class="c-body"><strong>Elegir el concepto</strong><p>Identificar el concepto que quieres comprender o verificar que comprendes. Escribirlo en la parte superior de una página en blanco.</p></div></li>
+        <li><span class="c-num">2</span><div class="c-body"><strong>Explicarlo como si lo enseñaras a alguien que no sabe nada del tema</strong><p>Sin jerga técnica, sin términos que no puedes definir tú mismo, sin shortcuts que funcionan porque la otra persona ya conoce el dominio. Habla como si tu audiencia fuera un niño de doce años inteligente pero sin formación en el área.</p></div></li>
+        <li><span class="c-num">3</span><div class="c-body"><strong>Identificar los vacíos</strong><p>Los lugares donde te trabas, donde necesitas recurrir al lenguaje técnico porque no puedes expresarlo de otra manera, donde dices "y entonces... ya sabes" — esos son exactamente los lugares donde la comprensión es superficial. Son el mapa de lo que queda por aprender.</p></div></li>
+        <li><span class="c-num">4</span><div class="c-body"><strong>Simplificar y usar analogías</strong><p>Volver a las fuentes, rellenar los vacíos, y reformular la explicación hasta que fluya sin depender de vocabulario especializado. Una analogía que conecta el concepto con algo ya conocido es señal de comprensión genuina.</p></div></li>
+      </ul>
+
+      <h2>El tutor como usuario de la Técnica Feynman</h2>
+      <p>La Técnica Feynman tiene dos usos distintos en el contexto de la tutoría, y ambos son valiosos. El primero es como herramienta de diagnóstico del tutor: pedirle al estudiante que explique el concepto sin usar términos técnicos revela inmediatamente el estado real de su comprensión. Las pausas, las circulares, los "es que es como... no sé cómo explicarlo" son diagnóstico en tiempo real.</p>
+      <p>El segundo uso es como herramienta de aprendizaje activo para el estudiante. Asignar como tarea que el estudiante explique el concepto a un familiar sin formación académica — o incluso que lo explique en voz alta al tutor como si este no supiera nada — produce una forma de procesamiento cognitivo que la lectura y la repetición de ejercicios no generan.</p>
+
+      <div class="pull-quote">
+        <p>Si no puedes explicarlo de manera simple, no lo entiendes suficientemente bien.</p>
+        <span class="attribution">— Atribuido a Richard Feynman</span>
+      </div>
+
+      <h2>Tres niveles de simplificación</h2>
+      <p>Una aplicación práctica de la Técnica Feynman para el tutor es la práctica de explicar el mismo concepto en tres niveles de accesibilidad. Si puedes hacerlo en los tres, lo entiendes profundamente.</p>
+
+      <div class="levels">
+        <div class="level-row">
+          <div class="level-badge" style="background:var(--accent);"><span>Nivel experto</span></div>
+          <div class="level-text"><p><strong>La fotosíntesis</strong> es el proceso por el cual los organismos fotosintéticos convierten energía luminosa en energía química almacenada en glucosa, mediante la reducción fotoquímica del CO₂ usando electrones del agua, con producción de O₂ como subproducto.</p></div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge" style="background:var(--accent2);"><span>Nivel estudiante</span></div>
+          <div class="level-text"><p><strong>La fotosíntesis</strong> es como una fábrica dentro de la hoja: entra luz solar, agua y CO₂, y sale azúcar (que la planta usa como alimento) y oxígeno (que libera al aire). La clorofila es la máquina que captura la luz y hace funcionar todo.</p></div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge" style="background:var(--accent3);"><span>Nivel niño</span></div>
+          <div class="level-text"><p><strong>La fotosíntesis</strong> es la manera que tiene la planta de preparar su propia comida. Usa la luz del sol como energía, toma agua del suelo y aire del ambiente, y con todo eso fabrica el azúcar que necesita para crecer. Como si tuvieras una cocina dentro de cada hoja.</p></div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>La Técnica Feynman revela la diferencia entre conocer las palabras de un concepto y comprenderlo genuinamente. Para el tutor, es tanto una herramienta diagnóstica (pedir al estudiante que explique sin jerga) como una estrategia de aprendizaje activo. La incapacidad de simplificar una idea es evidencia de comprensión superficial — no en el estudiante, tampoco en el tutor.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" disabled>← Anterior</button>
+        <div class="progress-track"><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(1)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ART 4.2 -->
+    <article class="article" id="art-1">
+      <div class="cover-line">Unidad 4 · Artículo 4.2</div>
+      <h1 class="article-title">El método <em>socrático</em> en la tutoría</h1>
+      <p class="article-subtitle">Cómo usar preguntas estratégicas para que el estudiante construya el conocimiento en lugar de recibirlo — y por qué esto produce una comprensión radicalmente más duradera.</p>
+      <div class="meta-row"><span class="meta-item">Lectura estimada: <strong>13 min</strong></span><span class="meta-item">Conceptos clave: <strong>4</strong></span><span class="meta-item">Nivel: <strong>Técnica aplicada</strong></span></div>
+      <div class="tag-list"><span class="tag">método socrático</span><span class="tag">mayéutica</span><span class="tag">preguntas estratégicas</span><span class="tag">pensamiento crítico</span></div>
+
+      <p class="drop-cap">Sócrates no enseñaba. Al menos, no en el sentido que usualmente damos al término. No daba conferencias, no dictaba principios, no ofrecía respuestas definitivas. Su método era la pregunta: una secuencia de preguntas cuidadosamente diseñadas que llevaban a su interlocutor a examinar sus propias suposiciones, descubrir sus contradicciones y construir, por sus propios medios, una comprensión más rigurosa que la que tenía al inicio de la conversación.</p>
+      <p>Este método — la <span class="key-term">mayéutica socrática</span>, del griego "arte de partera" porque "ayuda a dar a luz ideas que ya están en el interlocutor" — es uno de los más poderosos disponibles para un tutor. También es uno de los más difíciles de ejecutar, porque requiere una habilidad que va exactamente en contra del instinto del tutor novato: no responder cuando el estudiante no sabe. Preguntar, en cambio.</p>
+
+      <h2>Por qué la pregunta supera a la explicación</h2>
+      <p>La investigación en psicología cognitiva ofrece varias razones de por qué el aprendizaje generado por preguntas es más duradero que el generado por explicaciones. La más fundamental está relacionada con el <span class="key-term">efecto de generación</span> (Slamecka & Graf, 1978): la información que el estudiante genera activamente — incluso si debe esforzarse para hacerlo — se retiene significativamente mejor que la información que recibe pasivamente.</p>
+      <p>Cuando el tutor explica, el estudiante recibe. Cuando el tutor pregunta, el estudiante genera. La búsqueda activa de la respuesta activa procesos de recuperación, de conexión con conocimiento previo, de elaboración — exactamente los procesos que consolidan el aprendizaje en la memoria a largo plazo.</p>
+
+      <h2>Banco de preguntas socráticas por tipo de error</h2>
+
+      <div class="sq-grid">
+        <div class="sq-cell">
+          <span class="sq-type">Para activar conocimiento previo</span>
+          <ul>
+            <li>¿Qué sabes ya sobre este tema?</li>
+            <li>¿Has visto algo similar antes?</li>
+            <li>¿Qué crees que va a pasar antes de intentarlo?</li>
+          </ul>
+        </div>
+        <div class="sq-cell">
+          <span class="sq-type">Para profundizar la comprensión</span>
+          <ul>
+            <li>¿Por qué crees que funciona así?</li>
+            <li>¿Puedes explicarlo de otra manera?</li>
+            <li>¿Qué pasaría si cambias esta parte?</li>
+          </ul>
+        </div>
+        <div class="sq-cell">
+          <span class="sq-type">Ante un error</span>
+          <ul>
+            <li>¿Cómo llegaste a esa respuesta?</li>
+            <li>¿Estás seguro de ese paso? ¿Por qué?</li>
+            <li>¿Qué pasa si pruebas con un número simple primero?</li>
+          </ul>
+        </div>
+        <div class="sq-cell">
+          <span class="sq-type">Para transferencia</span>
+          <ul>
+            <li>¿Dónde más podrías aplicar esto?</li>
+            <li>¿En qué se parece este problema a uno que ya resolviste?</li>
+            <li>¿Qué principio general estás usando?</li>
+          </ul>
+        </div>
+        <div class="sq-cell">
+          <span class="sq-type">Para metacognición</span>
+          <ul>
+            <li>¿Qué parte te costó más trabajo entender?</li>
+            <li>¿Cómo sabrías si lo entendiste bien?</li>
+            <li>¿Qué harías diferente la próxima vez?</li>
+          </ul>
+        </div>
+        <div class="sq-cell">
+          <span class="sq-type">Para revelar misconceptions</span>
+          <ul>
+            <li>¿Siempre funciona así? ¿Puedes pensar en un caso donde no?</li>
+            <li>Si tu respuesta es correcta, ¿qué implicaría eso?</li>
+            <li>¿Cómo lo verificarías?</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>El arte de la espera: wait time</h2>
+      <p>Una de las habilidades más difíciles del método socrático — y más determinantes de su efectividad — es lo que Mary Budd Rowe (1972) llamó <span class="key-term">wait time</span>: el tiempo que el tutor espera después de hacer una pregunta antes de intervenir de nuevo. En sus investigaciones, Rowe encontró que el wait time promedio de los docentes era de 0.9 segundos. Menos de un segundo.</p>
+      <p>Cuando el wait time se extendió a tres segundos o más, los resultados fueron notables: las respuestas de los estudiantes aumentaron en longitud y complejidad, más estudiantes respondieron, la calidad del razonamiento mejoró, y los propios docentes formularon preguntas de mayor calidad. Tres segundos de silencio incómodo producen mejores resultados que la respuesta inmediata del tutor.</p>
+
+      <div class="theory-box" data-label="Dificultad práctica">
+        <h4>Por qué cuesta tanto no responder</h4>
+        <p>El impulso de responder inmediatamente cuando el estudiante se bloquea es casi irresistible para el tutor que se identifica como experto en el contenido. El silencio se percibe como ineficiencia, como pérdida de tiempo, como fracaso del proceso. Pero esa incomodidad es exactamente la señal de que el estudiante está trabajando — está buscando activamente, conectando, procesando.</p>
+        <p>El tutor que interviene antes de que ese proceso se complete no está ayudando. Está quitando al estudiante el único momento en que el aprendizaje profundo puede ocurrir. La pregunta del tutor es la semilla; el silencio es el suelo donde germina.</p>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>El método socrático usa preguntas estratégicas para que el estudiante construya comprensión en lugar de recibirla. El efecto de generación — información producida activamente se retiene mejor que información recibida pasivamente — explica su superioridad sobre la explicación directa. El wait time de al menos tres segundos es una condición necesaria para que las preguntas funcionen. El banco de preguntas por tipo de situación es la herramienta práctica que lo hace implementable.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(0)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(2)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ART 4.3 -->
+    <article class="article" id="art-2">
+      <div class="cover-line">Unidad 4 · Artículo 4.3</div>
+      <h1 class="article-title">Analogías y <em>modelos mentales</em></h1>
+      <p class="article-subtitle">Cómo construir puentes entre lo que el estudiante ya sabe y lo que necesita aprender — y por qué una buena analogía puede hacer más que diez explicaciones directas.</p>
+      <div class="meta-row"><span class="meta-item">Lectura estimada: <strong>12 min</strong></span><span class="meta-item">Conceptos clave: <strong>4</strong></span><span class="meta-item">Nivel: <strong>Técnica aplicada</strong></span></div>
+      <div class="tag-list"><span class="tag">analogías</span><span class="tag">Gentner</span><span class="tag">modelos mentales</span><span class="tag">aprendizaje por transferencia analógica</span></div>
+
+      <p class="drop-cap">Cuando Rutherford quiso explicar la estructura del átomo a principios del siglo XX, no dijo: "el átomo consiste en un núcleo denso de carga positiva rodeado por electrones de carga negativa que orbitan a distancias proporcionales a sus niveles de energía." Eso es correcto, pero inaccesible. Dijo: "el átomo es como un sistema solar en miniatura, con el núcleo como el sol y los electrones como los planetas orbitando a su alrededor." La analogía del sistema solar no era perfecta — ninguna analogía lo es — pero construyó instantáneamente un modelo mental comprensible sobre el cual el conocimiento más preciso podía edificarse.</p>
+      <p>Las analogías funcionan porque el cerebro humano aprende conectando lo nuevo con lo conocido. Cuando el tutor presenta un concepto absolutamente nuevo sin ningún punto de anclaje en la experiencia previa del estudiante, la información no tiene dónde conectarse en la red de conocimiento existente. La analogía crea ese punto de anclaje.</p>
+
+      <h2>La ciencia de la analogía: Gentner y el mapeo estructural</h2>
+      <p>Dedre Gentner (1983) propuso la teoría del <span class="key-term">mapeo estructural</span> para explicar cómo funcionan las analogías cognitivamente. Una analogía no es simplemente una comparación superficial de características; es un mapeo de relaciones estructurales entre dos dominios. Las mejores analogías comparten con el concepto objetivo no solo características superficiales sino la misma estructura de relaciones causales.</p>
+      <p>La analogía del sistema solar para el átomo, por ejemplo, mapea la relación "cuerpo central masivo ejerce atracción gravitacional sobre cuerpos más pequeños que orbitan a su alrededor" — una estructura relacional, no solo características visuales. Este tipo de mapeo profundo es el que produce comprensión transferible, no solo reconocimiento superficial.</p>
+
+      <div class="figure">
+        <table>
+          <thead><tr><th>Concepto a enseñar</th><th>Analogía fuente</th><th>Estructura que se mapea</th><th>Límite de la analogía</th></tr></thead>
+          <tbody>
+            <tr><td>Corriente eléctrica</td><td>Agua en una tubería</td><td>Flujo impulsado por presión (voltaje), resistido por fricción (resistencia)</td><td>Los electrones no se "consumen" como el agua</td></tr>
+            <tr><td>Sistema inmune</td><td>Ejército de defensa</td><td>Reconocimiento de enemigos (antígenos), respuesta especializada, memoria de ataques pasados</td><td>El sistema inmune puede atacarse a sí mismo</td></tr>
+            <tr><td>Función matemática</td><td>Máquina expendedora</td><td>Entrada → proceso → salida; misma entrada produce siempre la misma salida</td><td>Las funciones pueden tener infinitos valores posibles</td></tr>
+            <tr><td>Inflación económica</td><td>Subasta con más dinero</td><td>Más dinero persiguiendo los mismos bienes → sube el precio de equilibrio</td><td>No captura la inflación de oferta ni expectativas</td></tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 4.3 — Analogías efectivas y sus límites explícitos</span>
+      </div>
+
+      <h2>El peligro de las analogías sin límites</h2>
+      <p>La misma característica que hace útiles a las analogías — que simplifican, que reducen complejidad, que hacen accesible — las hace también potencialmente peligrosas si no se usan con cuidado. Una analogía que se aplica más allá de sus límites produce <span class="key-term">misconceptions</span>: el estudiante toma el modelo mental simplificado y lo aplica donde no aplica, generando errores sistemáticos.</p>
+      <p>El tutor que usa la analogía del átomo como sistema solar y nunca señala sus límites produce estudiantes que imaginan los electrones como bolitas pequeñas moviéndose en órbitas circulares — una imagen que interfiere activamente con la comprensión del modelo cuántico. La regla es: toda analogía debe ir acompañada de la declaración explícita de sus límites.</p>
+
+      <blockquote>
+        <p>Una analogía es un mapa, no el territorio. El mapa es útil para orientarse, pero no es el lugar. Quien confunde el mapa con el territorio se pierde cuando el mapa no alcanza.</p>
+        <cite>— Alfred Korzybski, adaptado al contexto pedagógico</cite>
+      </blockquote>
+
+      <h2>Cómo construir una buena analogía</h2>
+      <ul class="concept-list">
+        <li><span class="c-num">1</span><div class="c-body"><strong>Identifica la estructura relacional del concepto</strong><p>¿Cuál es la relación causal o funcional central que define el concepto? No las características superficiales sino el mecanismo.</p></div></li>
+        <li><span class="c-num">2</span><div class="c-body"><strong>Busca un dominio familiar que tenga la misma estructura</strong><p>Pregúntate: ¿en qué otro contexto, conocido para este estudiante específico, existe esa misma relación? La analogía más poderosa es la que conecta con la experiencia personal del estudiante, no con ejemplos genéricos.</p></div></li>
+        <li><span class="c-num">3</span><div class="c-body"><strong>Establece el mapeo explícitamente</strong><p>No asumas que el estudiante verá la correspondencia. Mapea en voz alta: "el núcleo es como el sol porque... los electrones son como los planetas porque..."</p></div></li>
+        <li><span class="c-num">4</span><div class="c-body"><strong>Declara los límites de la analogía</strong><p>"Hasta aquí funciona la comparación. Pero a diferencia del sistema solar, los electrones no se mueven en órbitas fijas — se comportan más como nubes de probabilidad." La frontera de la analogía es también la entrada al conocimiento más preciso.</p></div></li>
+      </ul>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>Las analogías funcionan mapeando la estructura relacional de un concepto desconocido sobre un dominio familiar. Las mejores analogías comparten estructura causal o funcional, no solo características superficiales. Toda analogía debe ir acompañada de la declaración explícita de sus límites para prevenir misconceptions. El tutor que sabe construir analogías puede hacer accesible prácticamente cualquier concepto complejo.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(1)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(3)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ART 4.4 -->
+    <article class="article" id="art-3">
+      <div class="cover-line">Unidad 4 · Artículo 4.4</div>
+      <h1 class="article-title">Bruner y la progresión de lo <em>concreto a lo abstracto</em></h1>
+      <p class="article-subtitle">El principio de secuenciación que garantiza que la abstracción matemática o científica sea comprensible — porque siempre puede anclarse en una experiencia concreta previa.</p>
+      <div class="meta-row"><span class="meta-item">Lectura estimada: <strong>11 min</strong></span><span class="meta-item">Conceptos clave: <strong>3</strong></span><span class="meta-item">Nivel: <strong>Secuenciación</strong></span></div>
+      <div class="tag-list"><span class="tag">Jerome Bruner</span><span class="tag">enactivo-icónico-simbólico</span><span class="tag">representación</span><span class="tag">CPA</span><span class="tag">aprendizaje concreto</span></div>
+
+      <p class="drop-cap">¿Por qué tantos estudiantes tienen dificultades con las matemáticas abstractas? ¿Por qué el álgebra, que es solo aritmética generalizada, resulta incomprensible para estudiantes que no tuvieron problemas con los números? ¿Por qué la notación química, que es solo una representación compacta de transformaciones físicas, produce confusión en lugar de claridad? Jerome Bruner ofreció en 1966 una respuesta que sigue siendo una de las más útiles: el salto a lo abstracto se hizo sin construir primero las representaciones intermedias que lo hacen comprensible.</p>
+      <p>Bruner propuso que el conocimiento puede representarse en tres modos que corresponden a distintas etapas del desarrollo cognitivo — aunque no solo del desarrollo: también de la adquisición de cualquier nuevo dominio de conocimiento a cualquier edad:</p>
+
+      <h2>Los tres modos de representación</h2>
+
+      <div class="levels">
+        <div class="level-row">
+          <div class="level-badge" style="background:var(--accent);"><span>Enactivo</span></div>
+          <div class="level-text">
+            <p><strong>Representación a través de la acción y la manipulación física.</strong> El conocimiento está en el cuerpo, en el movimiento, en la interacción directa con objetos. El niño que aprende a sumar moviendo bloques físicos opera en modo enactivo. El estudiante que entiende la gravedad porque ha lanzado objetos opera en modo enactivo.</p>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge" style="background:var(--accent2);"><span>Icónico</span></div>
+          <div class="level-text">
+            <p><strong>Representación a través de imágenes, diagramas y representaciones visuales.</strong> El conocimiento ya no requiere la acción física, pero todavía depende de la representación visual o espacial. Un diagrama de barras que representa una suma, un mapa conceptual, una ilustración del circuito eléctrico: todos son representaciones icónicas.</p>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge" style="background:var(--accent3);"><span>Simbólico</span></div>
+          <div class="level-text">
+            <p><strong>Representación a través de símbolos arbitrarios — lenguaje, fórmulas, notación.</strong> El conocimiento existe independientemente de la experiencia física o visual. "x + 3 = 7" es una representación simbólica que solo tiene significado si previamente se construyeron los modos enactivo e icónico correspondientes.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>El error del salto prematuro al símbolo</h2>
+      <p>El problema pedagógico que Bruner identifica es el salto prematuro al modo simbólico sin haber construido suficientemente los modos enactivo e icónico. Este salto es extremadamente común en tutorías de matemáticas y ciencias: el tutor, que opera con comodidad en el modo simbólico, asume que el estudiante también puede — y comienza directamente con fórmulas, ecuaciones y notación.</p>
+      <p>Para el estudiante que no tiene construidos los modos previos, los símbolos son completamente arbitrarios. Puede memorizarlos y manipularlos procedimentalmente, pero sin comprensión. La ecuación 2x + 4 = 10 es una cadena de caracteres sin significado hasta que se conecta con la experiencia concreta de "tengo dos bolsas con la misma cantidad de canicas, más cuatro sueltas, y en total son diez: ¿cuántas hay en cada bolsa?"</p>
+
+      <div class="theory-box" data-label="Aplicación en aula">
+        <h4>El enfoque CPA (Concreto-Pictórico-Abstracto)</h4>
+        <p>La metodología Singapur de enseñanza de matemáticas — sistemáticamente una de las de mejores resultados en evaluaciones internacionales como PISA — se basa directamente en la secuencia de Bruner, renombrada como CPA: Concreto, Pictórico, Abstracto.</p>
+        <p>En el nivel Concreto, los estudiantes manipulan objetos físicos para explorar el concepto. En el nivel Pictórico, trabajan con representaciones visuales (diagramas de barras, tablas, ilustraciones). En el nivel Abstracto, finalmente trabajan con notación matemática formal. La secuencia nunca se salta — el abstracto siempre viene después de haber construido las representaciones previas.</p>
+      </div>
+
+      <h2>Implicación práctica: diagnóstico del modo de representación</h2>
+      <p>Para el tutor, la secuencia CPA/EIS tiene una implicación diagnóstica directa: cuando un estudiante tiene dificultades con el modo simbólico, la pregunta no es "¿por qué no entiende las fórmulas?" sino "¿qué representación anterior falta o está mal construida?" La intervención consiste en retroceder al nivel enactivo o icónico, reconstruir esa representación, y avanzar de nuevo hacia el simbólico — ahora con una base sólida.</p>
+
+      <div class="callout">
+        <span class="callout-label">Síntesis de la Unidad 4</span>
+        <p>Las técnicas didácticas de esta unidad comparten una filosofía común: la comprensión genuina se construye activamente, siempre desde lo conocido hacia lo nuevo, y siempre en el nivel correcto de abstracción. La Técnica Feynman verifica si la comprensión es real. El método socrático activa al estudiante para construirla. Las analogías crean el puente entre lo conocido y lo nuevo. La secuencia EIS de Bruner garantiza que la abstracción siempre tenga raíces en la experiencia concreta.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(2)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot active"></div></div>
+        <button class="nav-btn" disabled style="opacity:.3;cursor:default;">Fin de la unidad</button>
+      </div>
+    </article>
+  </main>
+</div>
+<script>
+  const articles=document.querySelectorAll('.article');
+  const navItems=document.querySelectorAll('.nav-item');
+  const dots=document.querySelectorAll('#progress-dots .progress-dot');
+  let visited=new Set([0]);
+  function show(idx){articles.forEach((a,i)=>a.classList.toggle('active',i===idx));navItems.forEach((n,i)=>n.classList.toggle('active',i===idx));visited.add(idx);dots.forEach((d,i)=>{d.classList.remove('active','done');if(i===idx)d.classList.add('active');else if(visited.has(i))d.classList.add('done');});window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>

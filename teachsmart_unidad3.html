@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeachSmart · Unidad 3: Diseño de Clases que Funcionan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1a1714;--ink2:#3d3830;--ink3:#7a7066;--paper:#f6f5f2;--paper2:#eeece6;--paper3:#e0ddd4;--accent:#1a3a6b;--accent2:#3a6bc4;--accent3:#c4430a;--rule:#ccc9be;--serif:'Source Serif 4',Georgia,serif;--display:'Playfair Display',Georgia,serif;--mono:'DM Mono',monospace;--col:680px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.75;font-weight:300;}
+  .site-header{background:var(--ink);color:var(--paper);padding:0 40px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:2px solid var(--accent2);}
+  .site-header .brand{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--paper);opacity:.9;}
+  .site-header .unit-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:#90b0e8;text-transform:uppercase;}
+  .layout{display:flex;min-height:100vh;}
+  .sidebar{width:260px;flex-shrink:0;background:var(--ink);padding:40px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+  .sidebar-section{padding:0 24px 32px;}
+  .sidebar-title{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #2e2a24;}
+  .nav-item{display:block;padding:9px 12px;margin-bottom:2px;border-radius:4px;cursor:pointer;transition:background .15s,color .15s;border:none;background:none;width:100%;text-align:left;color:#a89e90;font-family:var(--serif);font-size:13.5px;font-weight:300;line-height:1.4;}
+  .nav-item:hover{background:#2a2520;color:white;}
+  .nav-item.active{background:var(--accent);color:white;font-weight:400;}
+  .nav-item .num{font-family:var(--mono);font-size:10px;opacity:.6;display:block;margin-bottom:2px;}
+  .main{flex:1;min-width:0;padding:60px 80px 120px;}
+  .article{display:none;max-width:var(--col);}
+  .article.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .cover-line{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:16px;}
+  .article-title{font-family:var(--display);font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.1;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;}
+  .article-title em{font-style:italic;color:var(--accent2);}
+  .article-subtitle{font-size:19px;font-weight:300;font-style:italic;color:var(--ink3);margin-bottom:40px;line-height:1.5;border-bottom:1px solid var(--rule);padding-bottom:32px;}
+  .drop-cap::first-letter{font-family:var(--display);font-size:4.8em;font-weight:900;float:left;line-height:.78;margin-right:10px;margin-top:6px;color:var(--accent2);}
+  p{margin-bottom:1.4em;}p+p{text-indent:1.5em;}p+p.no-indent{text-indent:0;}
+  h2{font-family:var(--display);font-size:26px;font-weight:700;color:var(--ink);margin:52px 0 18px;padding-top:8px;border-top:2px solid var(--ink);}
+  h3{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink2);margin:32px 0 12px;}
+  .pull-quote{margin:48px -40px;padding:32px 40px;background:var(--ink);position:relative;overflow:hidden;}
+  .pull-quote::before{content:'\201C';font-family:var(--display);font-size:200px;font-weight:900;color:var(--accent2);position:absolute;top:-40px;left:20px;opacity:.1;line-height:1;}
+  .pull-quote p{font-family:var(--display);font-size:22px;font-style:italic;font-weight:700;line-height:1.4;color:white;margin:0;text-indent:0!important;position:relative;z-index:1;}
+  .pull-quote .attribution{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#90b0e8;margin-top:12px;display:block;}
+  .callout{border-left:3px solid var(--accent2);padding:20px 24px;margin:32px 0;background:var(--paper2);}
+  .callout .callout-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;display:block;}
+  .callout p{margin:0;font-size:15.5px;line-height:1.65;}
+  .callout p+p{text-indent:0;margin-top:10px;}
+  .theory-box{border:1px solid var(--rule);padding:28px 32px;margin:36px 0;position:relative;background:white;}
+  .theory-box::before{content:attr(data-label);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:white;background:var(--accent3);padding:4px 12px;position:absolute;top:-12px;left:24px;}
+  .theory-box h4{font-family:var(--display);font-size:19px;font-weight:700;margin-bottom:12px;}
+  .theory-box p{font-size:15.5px;margin-bottom:.8em;}
+  .theory-box p:last-child{margin-bottom:0;}
+  .key-term{font-weight:600;border-bottom:1.5px solid var(--accent2);}
+  .figure{margin:40px 0;padding:28px;background:var(--paper2);border-top:3px solid var(--accent2);}
+  .figure-caption{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink3);margin-top:16px;display:block;}
+  table{width:100%;border-collapse:collapse;margin:28px 0;font-size:14.5px;}
+  th{background:var(--ink);color:white;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:12px 16px;text-align:left;}
+  td{padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--paper2);}
+  .concept-list{list-style:none;padding:0;margin:24px 0;}
+  .concept-list li{display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--rule);}
+  .concept-list li:first-child{border-top:1px solid var(--rule);}
+  .concept-list .c-num{font-family:var(--display);font-size:36px;font-weight:900;color:var(--paper3);line-height:1;flex-shrink:0;width:40px;text-align:right;}
+  .concept-list .c-body{flex:1;}
+  .concept-list .c-body strong{font-size:15.5px;font-weight:600;display:block;margin-bottom:4px;}
+  .concept-list .c-body p{font-size:14.5px;margin:0;color:var(--ink2);line-height:1.6;text-indent:0;}
+  blockquote{margin:28px 0;padding:0 0 0 24px;border-left:2px solid var(--accent2);}
+  blockquote p{font-style:italic;font-size:16px;color:var(--ink2);text-indent:0!important;margin:0;}
+  blockquote cite{font-family:var(--mono);font-size:11px;color:var(--ink3);font-style:normal;display:block;margin-top:8px;}
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0;}
+  .tag{font-family:var(--mono);font-size:11px;padding:5px 12px;border:1px solid var(--rule);color:var(--ink3);}
+  .meta-row{display:flex;gap:24px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--rule);}
+  .meta-item{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink3);}
+  .meta-item strong{color:var(--ink2);font-weight:500;}
+  .progress-track{display:flex;gap:6px;align-items:center;}
+  .progress-dot{width:8px;height:8px;border-radius:50%;background:var(--rule);cursor:pointer;transition:background .2s,transform .2s;}
+  .progress-dot.done{background:var(--accent2);}
+  .progress-dot.active{background:var(--accent);transform:scale(1.3);}
+  .article-footer{margin-top:72px;padding-top:32px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;}
+  .nav-btn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;background:none;border:1px solid var(--rule);padding:10px 20px;color:var(--ink2);transition:all .2s;}
+  .nav-btn:hover{background:var(--ink);color:white;border-color:var(--ink);}
+  .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+  .nav-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
+  .nav-btn.primary:hover{background:var(--ink);border-color:var(--ink);}
+  /* Session timeline */
+  .session-flow{margin:36px 0;}
+  .session-phase{display:flex;margin-bottom:2px;}
+  .phase-bar{width:160px;flex-shrink:0;padding:16px 20px;display:flex;flex-direction:column;justify-content:center;}
+  .phase-name{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:white;display:block;}
+  .phase-time{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.6);display:block;margin-top:3px;}
+  .phase-content{flex:1;padding:16px 24px;background:var(--paper2);}
+  .phase-content p{font-size:14px;line-height:1.6;color:var(--ink2);margin:0;}
+  .phase-content strong{font-size:13.5px;display:block;margin-bottom:4px;color:var(--ink);}
+  /* Gagné grid */
+  .gagne-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px;margin:28px 0;background:var(--rule);}
+  .gg-cell{padding:14px 18px;background:white;}
+  .gg-cell.header{background:var(--ink);color:white;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;}
+  .gg-cell.num{background:var(--accent);color:white;font-family:var(--display);font-size:24px;font-weight:900;width:50px;display:flex;align-items:center;justify-content:center;}
+  .gg-cell p{font-size:13.5px;color:var(--ink2);line-height:1.5;margin:0;}
+  .gg-cell strong{font-size:13.5px;color:var(--ink);display:block;margin-bottom:3px;}
+  @media(max-width:900px){.sidebar{display:none;}.main{padding:32px 24px 80px;}.pull-quote{margin:36px -24px;padding:28px 24px;}.session-phase{flex-direction:column;}.phase-bar{width:100%;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <span class="brand">TEACHSMART</span>
+  <span class="unit-label">Unidad 3 · Diseño de Clases que Funcionan</span>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Artículos</div>
+      <button class="nav-item active" onclick="show(0)"><span class="num">3.1</span>Backwards Design: diseñar desde el final</button>
+      <button class="nav-item" onclick="show(1)"><span class="num">3.2</span>Los 9 eventos de instrucción de Gagné</button>
+      <button class="nav-item" onclick="show(2)"><span class="num">3.3</span>Carga cognitiva y chunking</button>
+      <button class="nav-item" onclick="show(3)"><span class="num">3.4</span>La sesión perfecta: inicio, desarrollo y cierre</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Progreso</div>
+      <div class="progress-track" id="progress-dots">
+        <div class="progress-dot active" onclick="show(0)"></div>
+        <div class="progress-dot" onclick="show(1)"></div>
+        <div class="progress-dot" onclick="show(2)"></div>
+        <div class="progress-dot" onclick="show(3)"></div>
+      </div>
+    </div>
+  </nav>
+  <main class="main">
+
+    <!-- ART 3.1 -->
+    <article class="article active" id="art-0">
+      <div class="cover-line">Unidad 3 · Artículo 3.1</div>
+      <h1 class="article-title">Backwards Design: diseñar <em>desde el final</em></h1>
+      <p class="article-subtitle">El principio contraintuitivo que transforma la planeación pedagógica: empezar por lo que quieres que el estudiante logre, no por los contenidos que quieres cubrir.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>12 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>3</strong></span>
+        <span class="meta-item">Nivel: <strong>Diseño instruccional</strong></span>
+      </div>
+      <div class="tag-list"><span class="tag">Backwards Design</span><span class="tag">Wiggins & McTighe</span><span class="tag">Understanding by Design</span><span class="tag">objetivos de aprendizaje</span></div>
+
+      <p class="drop-cap">La mayoría de los tutores planean sus sesiones siguiendo una secuencia que parece lógica: primero identifican los temas que hay que cubrir, luego seleccionan los materiales o ejercicios que van a usar, y finalmente piensan en cómo evaluar si el estudiante aprendió. Esta secuencia es tan natural que rara vez se cuestiona. Y sin embargo, produce sistemáticamente un tipo de sesión que cubre contenido sin asegurar comprensión.</p>
+      <p>Grant Wiggins y Jay McTighe propusieron en 1998 invertir esta secuencia. Su marco, llamado <span class="key-term">Understanding by Design</span> o Backwards Design, sostiene que el diseño instruccional eficaz comienza por la última pregunta, no por la primera: ¿qué quiero que el estudiante sea capaz de hacer al final de esta sesión? Y solo después pregunta: ¿qué evidencia de ese logro aceptaré? Y solo al final: ¿qué actividades producirán esa evidencia?</p>
+
+      <h2>Las tres etapas del Backwards Design</h2>
+      <ul class="concept-list">
+        <li><span class="c-num">1</span><div class="c-body"><strong>Etapa 1: Identificar los resultados deseados</strong><p>¿Qué debe entender, saber o poder hacer el estudiante al final? No "cubrir el tema de fracciones" sino "poder sumar fracciones con denominadores distintos y explicar por qué el procedimiento funciona." La especificidad del resultado es lo que hace posible el diseño.</p></div></li>
+        <li><span class="c-num">2</span><div class="c-body"><strong>Etapa 2: Determinar la evidencia de aprendizaje</strong><p>¿Cómo sabrás que el resultado se alcanzó? ¿Qué hará el estudiante que te lo demostrará? Un ejercicio tipo, una explicación en voz alta, un problema de aplicación en un contexto nuevo. La evidencia debe diseñarse antes de las actividades, no después.</p></div></li>
+        <li><span class="c-num">3</span><div class="c-body"><strong>Etapa 3: Planear las actividades de aprendizaje</strong><p>Solo ahora se diseñan las actividades: las explicaciones, los ejercicios, las preguntas. Y se diseñan con un criterio claro: ¿esta actividad lleva al estudiante hacia la evidencia que definí? Si no, no tiene lugar en la sesión.</p></div></li>
+      </ul>
+
+      <div class="pull-quote">
+        <p>El error más frecuente en la planeación pedagógica es confundir el medio con el fin. Cubrir el contenido no es el objetivo. El objetivo es que el estudiante comprenda.</p>
+        <span class="attribution">— Wiggins & McTighe, Understanding by Design, 1998</span>
+      </div>
+
+      <h2>El problema del "cubrimiento" de contenido</h2>
+      <p>Wiggins y McTighe identificaron lo que llamaron el <span class="key-term">síndrome del cubrimiento</span>: la tendencia del docente a planear en función del contenido que debe cubrir en lugar del aprendizaje que debe generar. Un tutor en modo cubrimiento se pregunta "¿ya vimos todo lo que había que ver?" al final de la sesión. Un tutor en modo Backwards Design se pregunta "¿el estudiante puede ahora hacer lo que necesita poder hacer?"</p>
+      <p>Esta diferencia no es semántica. El cubrimiento produce sesiones densas, sobrecargadas de información, que avanzan a un ritmo determinado por el contenido y no por la comprensión del estudiante. El Backwards Design produce sesiones donde el tiempo se distribuye en función de lo que el estudiante necesita para alcanzar el objetivo — aunque eso signifique ir más lento, o saltar contenido que no aporta al objetivo definido.</p>
+
+      <div class="figure">
+        <table>
+          <thead><tr><th>Criterio</th><th>Planificación tradicional</th><th>Backwards Design</th></tr></thead>
+          <tbody>
+            <tr><td>Punto de partida</td><td>¿Qué contenido tengo que cubrir?</td><td>¿Qué debe poder hacer el estudiante al final?</td></tr>
+            <tr><td>Selección de actividades</td><td>Las que son estándar para ese tema</td><td>Las que producen la evidencia de comprensión definida</td></tr>
+            <tr><td>Evaluación</td><td>Se diseña al final, como medición</td><td>Se define antes que las actividades</td></tr>
+            <tr><td>Ritmo</td><td>Determinado por el contenido</td><td>Determinado por la comprensión del estudiante</td></tr>
+            <tr><td>Criterio de éxito</td><td>"Terminamos el tema"</td><td>"El estudiante puede hacer X"</td></tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 3.1 — Comparación entre planificación tradicional y Backwards Design</span>
+      </div>
+
+      <h2>Aplicación práctica: del resultado al plan de sesión</h2>
+      <p>El proceso se vuelve concreto cuando se practica. Aquí un ejemplo de cómo aplicar las tres etapas en una sesión real de tutoría de matemáticas:</p>
+
+      <div class="callout">
+        <span class="callout-label">Ejemplo aplicado</span>
+        <p><strong>Etapa 1 — Resultado:</strong> "Al final de esta sesión, el estudiante podrá resolver ecuaciones lineales con una incógnita usando transposición de términos, y explicar en sus palabras por qué el procedimiento mantiene la igualdad."</p>
+        <p><strong>Etapa 2 — Evidencia:</strong> "Le presento dos ecuaciones nuevas que no hemos practicado. Las resuelve correctamente y me explica en voz alta cada paso. Si puede hacerlo sin ayuda, el objetivo está alcanzado."</p>
+        <p><strong>Etapa 3 — Actividades:</strong> "Comienzo con el concepto de balanza para anclar la intuición. Luego trabajo tres ejemplos del más simple al más complejo. Luego él resuelve dos con mi acompañamiento. Luego los dos del paso 2 solo."</p>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>El Backwards Design invierte la secuencia tradicional de planificación: primero define el resultado de aprendizaje esperado, luego la evidencia que lo demostrará, y solo entonces diseña las actividades. Este orden elimina el síndrome de cubrimiento y asegura que cada elemento de la sesión tenga una justificación pedagógica directa.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" disabled>← Anterior</button>
+        <div class="progress-track"><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(1)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ART 3.2 -->
+    <article class="article" id="art-1">
+      <div class="cover-line">Unidad 3 · Artículo 3.2</div>
+      <h1 class="article-title">Los 9 eventos de instrucción <em>de Gagné</em></h1>
+      <p class="article-subtitle">Una secuencia probada de acciones instruccionales que, cuando se aplican en orden, maximizan las condiciones para que el aprendizaje ocurra.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>13 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>9</strong></span>
+        <span class="meta-item">Nivel: <strong>Diseño instruccional</strong></span>
+      </div>
+      <div class="tag-list"><span class="tag">Robert Gagné</span><span class="tag">eventos de instrucción</span><span class="tag">condiciones del aprendizaje</span><span class="tag">secuencia didáctica</span></div>
+
+      <p class="drop-cap">Robert Gagné, psicólogo educativo norteamericano, publicó en 1965 su obra Las condiciones del aprendizaje, donde argumentó que diferentes tipos de aprendizaje requieren diferentes condiciones para ocurrir — y que ciertas condiciones son necesarias para casi cualquier tipo de aprendizaje. A partir de esta premisa, desarrolló un modelo de nueve eventos instruccionales que describe la secuencia de acciones que un instructor debe realizar para crear las condiciones óptimas de aprendizaje.</p>
+      <p>Los nueve eventos no son una fórmula mágica ni un protocolo rígido. Son una lista de verificación: cada evento corresponde a un proceso cognitivo que el estudiante necesita activar, y la ausencia de cualquiera de ellos deja un vacío en el proceso de aprendizaje.</p>
+
+      <h2>Los nueve eventos</h2>
+
+      <div class="gagne-grid">
+        <div class="gg-cell header"></div>
+        <div class="gg-cell header">Evento</div>
+        <div class="gg-cell header">Propósito y cómo aplicarlo</div>
+
+        <div class="gg-cell num">1</div>
+        <div class="gg-cell"><strong>Captar la atención</strong><p>Activar la recepción del estudiante antes de cualquier instrucción.</p></div>
+        <div class="gg-cell"><p>Una pregunta sorprendente, un problema real, un contraejemplo que viola expectativas. "Antes de empezar, ¿cuántos grados crees que suman los ángulos de un triángulo dibujado en una esfera?"</p></div>
+
+        <div class="gg-cell num">2</div>
+        <div class="gg-cell"><strong>Informar el objetivo</strong><p>El estudiante sabe qué va a aprender y por qué importa.</p></div>
+        <div class="gg-cell"><p>"Hoy vas a poder resolver cualquier ecuación lineal con una incógnita. Al final de la sesión, si te dan una ecuación nueva, la vas a resolver solo." El objetivo concreto organiza el procesamiento cognitivo.</p></div>
+
+        <div class="gg-cell num">3</div>
+        <div class="gg-cell"><strong>Activar el conocimiento previo</strong><p>Conectar lo nuevo con lo que ya existe en la memoria.</p></div>
+        <div class="gg-cell"><p>"¿Recuerdas qué es una balanza? ¿Qué pasa si agregas algo de un lado?" La nueva información necesita un gancho en la memoria existente para ser retenida.</p></div>
+
+        <div class="gg-cell num">4</div>
+        <div class="gg-cell"><strong>Presentar el contenido</strong><p>Transmitir la nueva información de manera clara y estructurada.</p></div>
+        <div class="gg-cell"><p>Este es el único momento de "explicación" en el modelo — y ocupa mucho menos espacio del que suele ocupar en las tutorías convencionales. La explicación debe ser concisa y seguida inmediatamente de los eventos 5-7.</p></div>
+
+        <div class="gg-cell num">5</div>
+        <div class="gg-cell"><strong>Proporcionar guía de aprendizaje</strong><p>Dar ejemplos, analogías, casos que faciliten la codificación.</p></div>
+        <div class="gg-cell"><p>No solo ejemplos del procedimiento correcto — también ejemplos de errores comunes y por qué son errores. El contraste entre lo correcto y lo incorrecto facilita la discriminación.</p></div>
+
+        <div class="gg-cell num">6</div>
+        <div class="gg-cell"><strong>Provocar la práctica</strong><p>El estudiante aplica activamente lo aprendido.</p></div>
+        <div class="gg-cell"><p>El evento más subrepresentado en las tutorías. El estudiante debe practicar — con ejercicios graduados — antes de que el tutor pueda asumir que el aprendizaje ocurrió. Sin práctica, el aprendizaje no se consolida.</p></div>
+
+        <div class="gg-cell num">7</div>
+        <div class="gg-cell"><strong>Proveer retroalimentación</strong><p>Informar al estudiante sobre la calidad de su desempeño.</p></div>
+        <div class="gg-cell"><p>Retroalimentación inmediata, específica y orientada al proceso: "Tu razonamiento en el primer paso fue correcto. El error está en el segundo, cuando moviste el término sin cambiar el signo. ¿Ves por qué?"</p></div>
+
+        <div class="gg-cell num">8</div>
+        <div class="gg-cell"><strong>Evaluar el desempeño</strong><p>Verificar si el objetivo se alcanzó.</p></div>
+        <div class="gg-cell"><p>Un problema nuevo — distinto de los practicados — que el estudiante resuelve solo. Este es el cierre del ciclo de aprendizaje y el equivalente al "paso de evidencia" del Backwards Design.</p></div>
+
+        <div class="gg-cell num">9</div>
+        <div class="gg-cell"><strong>Promover la transferencia</strong><p>Conectar lo aprendido con contextos futuros.</p></div>
+        <div class="gg-cell"><p>"¿En qué otros problemas podrías usar este procedimiento?" / "¿Dónde aparece esto en la vida real?" La transferencia no ocurre automáticamente — el tutor debe facilitarla explícitamente.</p></div>
+      </div>
+
+      <h2>Los eventos que más se omiten</h2>
+      <p>En la práctica, la mayoría de los tutores cubren bien los eventos 3, 4 y 5. Los eventos que sistemáticamente se omiten o se subejecutan son el 1 (la atención se da por sentada), el 6 (la práctica del estudiante se reduce a uno o dos ejercicios), el 8 (la evaluación de cierre no ocurre) y el 9 (la transferencia no se trabaja explícitamente).</p>
+      <p>La ausencia del evento 8 es especialmente costosa: si el tutor no evalúa al final de la sesión si el objetivo se alcanzó, puede terminar la sesión con la falsa impresión de que el aprendizaje ocurrió, cuando en realidad solo hubo exposición al contenido.</p>
+
+      <blockquote>
+        <p>Una sesión sin evaluación de cierre es como un vuelo sin aterrizaje. Se puede estar en el aire todo el tiempo previsto — y aun así no haber llegado.</p>
+        <cite>— Principio TeachSmart</cite>
+      </blockquote>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>Los nueve eventos de instrucción de Gagné describen la secuencia de acciones que activan los procesos cognitivos necesarios para el aprendizaje. No todos los eventos necesitan igual tiempo en cada sesión, pero la ausencia de cualquiera deja un vacío en el proceso. Los más subejecuados en tutorías son la práctica activa (evento 6), la evaluación de cierre (evento 8) y la transferencia explícita (evento 9).</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(0)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(2)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ART 3.3 -->
+    <article class="article" id="art-2">
+      <div class="cover-line">Unidad 3 · Artículo 3.3</div>
+      <h1 class="article-title">Carga cognitiva <em>y chunking</em></h1>
+      <p class="article-subtitle">Los límites de la memoria de trabajo y cómo diseñar sesiones que los respeten — porque ninguna explicación, por brillante que sea, puede superar la capacidad cognitiva de quien la recibe.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>13 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>4</strong></span>
+        <span class="meta-item">Nivel: <strong>Cognitivo-aplicado</strong></span>
+      </div>
+      <div class="tag-list"><span class="tag">Sweller</span><span class="tag">carga cognitiva</span><span class="tag">Miller</span><span class="tag">chunking</span><span class="tag">memoria de trabajo</span></div>
+
+      <p class="drop-cap">Hay una restricción fundamental en la capacidad humana de procesar información que toda estrategia pedagógica debe tener en cuenta: la memoria de trabajo — el sistema que mantiene y manipula activamente la información mientras pensamos — tiene una capacidad extremadamente limitada. George Miller estableció en 1956 que los humanos pueden mantener en la memoria de trabajo aproximadamente siete unidades de información (más o menos dos) al mismo tiempo. Investigaciones posteriores sugieren que el número real puede ser incluso menor: tres o cuatro unidades en condiciones de procesamiento exigente.</p>
+      <p>Esta limitación no es un defecto del estudiante — es una característica universal de la cognición humana. Y tiene una consecuencia directa para el tutor: si presentas más información de la que cabe en la memoria de trabajo al mismo tiempo, el excedente simplemente no se procesa. No se almacena en la memoria a largo plazo. No produce aprendizaje. Desaparece.</p>
+
+      <h2>La Teoría de la Carga Cognitiva</h2>
+      <p>John Sweller formalizó estas ideas en la <span class="key-term">Teoría de la Carga Cognitiva</span> (1988), distinguiendo tres tipos de carga que compiten por los recursos limitados de la memoria de trabajo:</p>
+
+      <div class="concept-list">
+        <li><span class="c-num">1</span><div class="c-body"><strong>Carga intrínseca</strong><p>La dificultad inherente del material: cuántos elementos deben procesarse simultáneamente para entender el concepto. No puede eliminarse — es parte del contenido — pero puede gestionarse secuenciando los conceptos de simple a complejo.</p></div></li>
+        <li><span class="c-num">2</span><div class="c-body"><strong>Carga extrínseca (o externa)</strong><p>La dificultad añadida por la manera en que se presenta el material. Un enunciado confuso, una explicación desordenada, instrucciones ambiguas — todo esto añade carga que no contribuye al aprendizaje. El tutor puede y debe minimizarla.</p></div></li>
+        <li><span class="c-num">3</span><div class="c-body"><strong>Carga germinal</strong><p>El esfuerzo cognitivo dedicado a construir y automatizar esquemas — es decir, el trabajo de aprendizaje real. Esta es la carga que queremos maximizar. El objetivo del diseño instruccional es minimizar la carga extrínseca para liberar recursos cognitivos para la carga germinal.</p></div></li>
+      </ul>
+
+      <h2>Chunking: agrupar para expandir la capacidad</h2>
+      <p>Si la memoria de trabajo solo puede manejar cuatro unidades a la vez, ¿cómo es posible que un experto procese problemas de enorme complejidad? La respuesta está en el <span class="key-term">chunking</span> — la agrupación de elementos individuales en unidades de mayor nivel que se procesan como un solo ítem.</p>
+      <p>Un maestro de ajedrez no "ve" treinta y dos piezas en el tablero — ve configuraciones: un ataque de flanco, un enroque comprometido, una amenaza de jaque en tres movimientos. Cada configuración es un chunk que agrupa múltiples elementos en una sola unidad de procesamiento. La expertise en cualquier dominio es, en gran medida, la construcción de un repertorio de chunks que permiten procesar eficientemente situaciones que abrumarían a un novato.</p>
+      <p>Para el tutor, esto tiene una implicación directa: cuando un estudiante tiene dificultades con un problema complejo, puede ser porque carece de los chunks necesarios para procesarlo eficientemente. La intervención no es siempre "explicar el problema" — puede ser "construir los chunks que hacen manejable el problema."</p>
+
+      <div class="theory-box" data-label="Aplicación práctica">
+        <h4>Principios de diseño para gestionar la carga cognitiva</h4>
+        <p><strong>Principio de segmentación:</strong> divide el contenido complejo en segmentos que pueden procesarse secuencialmente antes de integrarse. No presentes todo a la vez.</p>
+        <p><strong>Principio de pre-formación:</strong> antes de enseñar un proceso complejo, enseña los nombres y características de sus componentes por separado. El estudiante que ya conoce los elementos necesita menos carga para procesar el proceso completo.</p>
+        <p><strong>Principio de modalidad:</strong> usa simultáneamente el canal visual y el auditivo para presentar información complementaria. Los sistemas procesan en paralelo — combinados, expanden la capacidad efectiva de la memoria de trabajo.</p>
+        <p><strong>Principio de redundancia:</strong> no presentes el mismo texto tanto en pantalla como en voz alta. La redundancia compete por los mismos recursos, reduciendo la capacidad disponible para el procesamiento del contenido.</p>
+      </div>
+
+      <h2>Señales de sobrecarga cognitiva en la sesión</h2>
+      <p>Un tutor que conoce la Teoría de la Carga Cognitiva puede reconocer en tiempo real cuando un estudiante está sobrecargado — y ajustar antes de que la sesión se pierda:</p>
+
+      <div class="figure">
+        <table>
+          <thead><tr><th>Señal observable</th><th>Posible causa</th><th>Intervención</th></tr></thead>
+          <tbody>
+            <tr><td>El estudiante mira el problema sin intentarlo</td><td>Carga intrínseca excesiva — demasiados elementos simultáneos</td><td>Descomponer el problema en partes; trabajar una a la vez</td></tr>
+            <tr><td>Comete errores en procedimientos que ya dominaba</td><td>Recursos cognitivos saturados por el nuevo contenido</td><td>Reducir la novedad; volver a base conocida</td></tr>
+            <tr><td>Pregunta "¿cómo se hacía esto?" en cada paso</td><td>Los pasos anteriores no se automatizaron — no hay chunks</td><td>Practicar los pasos por separado hasta automatizarlos</td></tr>
+            <tr><td>Entiende mientras el tutor explica pero se bloquea solo</td><td>Dependencia del andamiaje externo del tutor</td><td>Retirar el andamiaje gradualmente; aumentar práctica independiente</td></tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 3.3 — Señales de sobrecarga cognitiva y respuestas instruccionales</span>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>La memoria de trabajo tiene una capacidad limitada — aproximadamente cuatro unidades simultáneas. La Teoría de la Carga Cognitiva distingue la carga inherente al contenido, la añadida por el diseño instruccional, y la dedicada al aprendizaje real. El tutor eficaz minimiza la carga extrínseca a través del chunking, la segmentación y principios de diseño cognitivamente informados.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(1)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(3)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ART 3.4 -->
+    <article class="article" id="art-3">
+      <div class="cover-line">Unidad 3 · Artículo 3.4</div>
+      <h1 class="article-title">La sesión perfecta: <em>inicio, desarrollo y cierre</em></h1>
+      <p class="article-subtitle">Cómo integrar todos los principios de diseño en una estructura concreta, aplicable y profesional para cada sesión de tutoría.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>12 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>3</strong></span>
+        <span class="meta-item">Nivel: <strong>Integrador-práctico</strong></span>
+      </div>
+      <div class="tag-list"><span class="tag">estructura de sesión</span><span class="tag">secuencia didáctica</span><span class="tag">planeación</span><span class="tag">cierre de sesión</span></div>
+
+      <p class="drop-cap">Los artículos anteriores de esta unidad construyeron los fundamentos teóricos del diseño instruccional: saber para qué se diseña (Backwards Design), qué secuencia de acciones activa el aprendizaje (Gagné) y cómo gestionar los límites cognitivos del estudiante (carga cognitiva). Es momento de integrar estos principios en la unidad mínima del trabajo de un tutor: la sesión individual.</p>
+      <p>Una sesión bien diseñada no es una sucesión de actividades que se van ocurriendo. Tiene una arquitectura: un inicio que prepara al estudiante para aprender, un desarrollo que construye comprensión de manera progresiva, y un cierre que consolida, verifica y proyecta. Cada fase tiene un propósito pedagógico específico que no puede ser reemplazado por las otras dos.</p>
+
+      <h2>La estructura en tres fases</h2>
+
+      <div class="session-flow">
+        <div class="session-phase">
+          <div class="phase-bar" style="background:var(--accent);">
+            <span class="phase-name">Inicio</span>
+            <span class="phase-time">~15% del tiempo</span>
+          </div>
+          <div class="phase-content">
+            <strong>Propósito: activar y orientar</strong>
+            <p>Revisión rápida de la sesión anterior. Activación del conocimiento previo relevante. Presentación del objetivo concreto de la sesión. Captura de la atención con un problema o pregunta motivadora. El estudiante sale del inicio sabiendo qué va a aprender y conectando con lo que ya sabe.</p>
+          </div>
+        </div>
+        <div class="session-phase">
+          <div class="phase-bar" style="background:var(--accent2);">
+            <span class="phase-name">Desarrollo</span>
+            <span class="phase-time">~70% del tiempo</span>
+          </div>
+          <div class="phase-content">
+            <strong>Propósito: construir comprensión progresiva</strong>
+            <p>Presentación del contenido nuevo (breve). Ejemplos y guía de aprendizaje. Práctica guiada con acompañamiento del tutor. Práctica semi-independiente. Retroalimentación continua. La proporción entre explicación del tutor y práctica activa del estudiante debe ser aproximadamente 30/70.</p>
+          </div>
+        </div>
+        <div class="session-phase">
+          <div class="phase-bar" style="background:var(--accent3);">
+            <span class="phase-name">Cierre</span>
+            <span class="phase-time">~15% del tiempo</span>
+          </div>
+          <div class="phase-content">
+            <strong>Propósito: consolidar, evaluar y proyectar</strong>
+            <p>Evaluación de cierre: el estudiante resuelve un problema nuevo solo. Síntesis de lo aprendido (idealmente expresada por el estudiante, no por el tutor). Conexión con la próxima sesión. Asignación de práctica independiente. El tutor nunca puede omitir el cierre — es la única manera de saber si la sesión funcionó.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>Los errores más comunes en la estructura</h2>
+
+      <div class="concept-list">
+        <li><span class="c-num">✕</span><div class="c-body"><strong>El inicio que no activa — el "comenzar explicando"</strong><p>Muchos tutores abren la sesión directamente con la explicación del nuevo contenido, sin revisión de la sesión anterior ni activación de conocimiento previo. Resultado: el nuevo contenido no tiene dónde "conectarse" en la memoria del estudiante. Se olvida más rápidamente.</p></div></li>
+        <li><span class="c-num">✕</span><div class="c-body"><strong>El desarrollo que no practica — el "volcado de contenido"</strong><p>El tutor pasa 50 de 60 minutos explicando y queda poco tiempo para práctica del estudiante. La comprensión durante la explicación es ilusoria hasta que se verifica con práctica activa. Sin práctica, no hay aprendizaje consolidado.</p></div></li>
+        <li><span class="c-num">✕</span><div class="c-body"><strong>El cierre que no cierra — el "se nos acabó el tiempo"</strong><p>El tiempo se consume en el desarrollo y el cierre se omite. La sesión termina sin verificación de comprensión ni síntesis. El tutor no sabe si la sesión funcionó. El estudiante no consolida lo aprendido.</p></div></li>
+      </ul>
+
+      <h2>El formato de planeación de sesión TeachSmart</h2>
+      <p>Una sesión bien diseñada puede documentarse en un formato simple que garantiza que ningún elemento pedagógico crítico sea omitido. Esto no es burocracia — es la diferencia entre un tutor que improvisa y uno que diseña.</p>
+
+      <div class="figure">
+        <table>
+          <thead><tr><th>Campo</th><th>Pregunta que responde</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Objetivo de sesión</td><td>¿Qué podrá hacer el estudiante al final?</td><td>"Resolver sistemas de dos ecuaciones por sustitución"</td></tr>
+            <tr><td>Evidencia de logro</td><td>¿Cómo verificaré que el objetivo se alcanzó?</td><td>"Resuelve solo el ejercicio 4 del cierre sin ayuda"</td></tr>
+            <tr><td>Conocimiento previo necesario</td><td>¿Qué debe ya saber el estudiante?</td><td>"Despejar variables en ecuaciones lineales"</td></tr>
+            <tr><td>Actividad de inicio</td><td>¿Cómo captaré la atención y activaré base?</td><td>"Pregunta: '¿Cuándo necesitarías dos ecuaciones para resolver un problema?'"</td></tr>
+            <tr><td>Secuencia de desarrollo</td><td>¿Qué ejercicios, en qué orden, con qué nivel de apoyo?</td><td>3 ejemplos guiados → 2 con apoyo → 2 independientes</td></tr>
+            <tr><td>Actividad de cierre</td><td>¿Qué problema nuevo resolverá solo para demostrar comprensión?</td><td>Problema contextualizado en situación nueva</td></tr>
+            <tr><td>Tarea de práctica</td><td>¿Qué practicará para consolidar hasta la próxima sesión?</td><td>3 ejercicios de práctica espaciada</td></tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 3.4 — Formato de planeación de sesión TeachSmart</span>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Síntesis de la Unidad 3</span>
+        <p>Una sesión eficaz se diseña desde el resultado esperado (Backwards Design), sigue una secuencia de acciones que activan los procesos cognitivos necesarios (Gagné), respeta los límites de la memoria de trabajo mediante segmentación y chunking, y se estructura en tres fases con propósitos pedagógicos distintos: inicio (activar y orientar), desarrollo (construir con práctica activa) y cierre (verificar y consolidar). El plan de sesión no es un trámite administrativo — es la herramienta que convierte la intuición pedagógica en diseño deliberado.</p>
+      </div>
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(2)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot active"></div></div>
+        <button class="nav-btn" disabled style="opacity:.3;cursor:default;">Fin de la unidad</button>
+      </div>
+    </article>
+
+  </main>
+</div>
+<script>
+  const articles=document.querySelectorAll('.article');
+  const navItems=document.querySelectorAll('.nav-item');
+  const dots=document.querySelectorAll('#progress-dots .progress-dot');
+  let visited=new Set([0]);
+  function show(idx){articles.forEach((a,i)=>a.classList.toggle('active',i===idx));navItems.forEach((n,i)=>n.classList.toggle('active',i===idx));visited.add(idx);dots.forEach((d,i)=>{d.classList.remove('active','done');if(i===idx)d.classList.add('active');else if(visited.has(i))d.classList.add('done');});window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>
