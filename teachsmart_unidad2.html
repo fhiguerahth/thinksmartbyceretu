@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeachSmart · Unidad 2: Diagnóstico Inteligente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#1a1714;--ink2:#3d3830;--ink3:#7a7066;
+    --paper:#f5f8f5;--paper2:#eaf0ea;--paper3:#d6e4d6;
+    --accent:#2a6049;--accent2:#4a9068;--accent3:#c4430a;
+    --rule:#c8d8c8;
+    --serif:'Source Serif 4',Georgia,serif;
+    --display:'Playfair Display',Georgia,serif;
+    --mono:'DM Mono',monospace;
+    --col:680px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.75;font-weight:300;}
+  .site-header{background:var(--ink);color:var(--paper);padding:0 40px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:2px solid var(--accent);}
+  .site-header .brand{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--paper);text-decoration:none;opacity:.9;}
+  .site-header .unit-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:#90c8a8;text-transform:uppercase;}
+  .layout{display:flex;min-height:100vh;}
+  .sidebar{width:260px;flex-shrink:0;background:var(--ink);color:var(--paper);padding:40px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+  .sidebar-section{padding:0 24px 32px;}
+  .sidebar-title{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #2e2a24;}
+  .nav-item{display:block;padding:9px 12px;margin-bottom:2px;border-radius:4px;cursor:pointer;transition:background .15s,color .15s;border:none;background:none;width:100%;text-align:left;color:#a89e90;font-family:var(--serif);font-size:13.5px;font-weight:300;line-height:1.4;}
+  .nav-item:hover{background:#2a2520;color:var(--paper);}
+  .nav-item.active{background:var(--accent);color:white;font-weight:400;}
+  .nav-item .num{font-family:var(--mono);font-size:10px;opacity:.6;display:block;margin-bottom:2px;}
+  .main{flex:1;min-width:0;padding:60px 80px 120px;}
+  .article{display:none;max-width:var(--col);}
+  .article.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .cover-line{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+  .article-title{font-family:var(--display);font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.1;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;}
+  .article-title em{font-style:italic;color:var(--accent);}
+  .article-subtitle{font-family:var(--serif);font-size:19px;font-weight:300;font-style:italic;color:var(--ink3);margin-bottom:40px;line-height:1.5;border-bottom:1px solid var(--rule);padding-bottom:32px;}
+  .drop-cap::first-letter{font-family:var(--display);font-size:4.8em;font-weight:900;float:left;line-height:.78;margin-right:10px;margin-top:6px;color:var(--accent);}
+  p{margin-bottom:1.4em;}
+  p+p{text-indent:1.5em;}
+  p+p.no-indent{text-indent:0;}
+  h2{font-family:var(--display);font-size:26px;font-weight:700;color:var(--ink);margin:52px 0 18px;padding-top:8px;border-top:2px solid var(--ink);letter-spacing:-.01em;}
+  h3{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink2);margin:32px 0 12px;}
+  .pull-quote{margin:48px -40px;padding:32px 40px;background:var(--ink);color:var(--paper);position:relative;overflow:hidden;}
+  .pull-quote::before{content:'\201C';font-family:var(--display);font-size:200px;font-weight:900;color:var(--accent);position:absolute;top:-40px;left:20px;opacity:.12;line-height:1;}
+  .pull-quote p{font-family:var(--display);font-size:22px;font-style:italic;font-weight:700;line-height:1.4;color:var(--paper);margin:0;text-indent:0!important;position:relative;z-index:1;}
+  .pull-quote .attribution{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#90c8a8;margin-top:12px;display:block;text-indent:0;}
+  .callout{border-left:3px solid var(--accent);padding:20px 24px;margin:32px 0;background:var(--paper2);}
+  .callout .callout-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block;}
+  .callout p{margin:0;font-size:15.5px;line-height:1.65;}
+  .callout p+p{text-indent:0;margin-top:10px;}
+  .theory-box{border:1px solid var(--rule);padding:28px 32px;margin:36px 0;position:relative;background:white;}
+  .theory-box::before{content:attr(data-label);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:white;background:var(--accent3);padding:4px 12px;position:absolute;top:-12px;left:24px;}
+  .theory-box h4{font-family:var(--display);font-size:19px;font-weight:700;margin-bottom:12px;color:var(--ink);}
+  .theory-box p{font-size:15.5px;margin-bottom:.8em;}
+  .theory-box p:last-child{margin-bottom:0;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:32px 0;background:var(--rule);}
+  .col-panel{padding:24px 28px;}
+  .col-panel.a{background:#f0f7f3;}
+  .col-panel.b{background:#f5f0ed;}
+  .col-panel .panel-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;display:block;font-weight:500;}
+  .col-panel.a .panel-label{color:var(--accent);}
+  .col-panel.b .panel-label{color:var(--accent3);}
+  .col-panel p{font-size:14.5px;line-height:1.6;margin:0 0 8px;color:var(--ink2);}
+  .col-panel p:last-child{margin-bottom:0;}
+  .concept-list{list-style:none;padding:0;margin:24px 0;}
+  .concept-list li{display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--rule);}
+  .concept-list li:first-child{border-top:1px solid var(--rule);}
+  .concept-list .c-num{font-family:var(--display);font-size:36px;font-weight:900;color:var(--paper3);line-height:1;flex-shrink:0;width:40px;text-align:right;}
+  .concept-list .c-body{flex:1;}
+  .concept-list .c-body strong{font-family:var(--serif);font-size:15.5px;font-weight:600;display:block;margin-bottom:4px;color:var(--ink);}
+  .concept-list .c-body p{font-size:14.5px;margin:0;color:var(--ink2);line-height:1.6;text-indent:0;}
+  .figure{margin:40px 0;padding:28px;background:var(--paper2);border-top:3px solid var(--accent2);}
+  .figure-caption{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink3);margin-top:16px;display:block;}
+  .key-term{font-weight:600;color:var(--ink);border-bottom:1.5px solid var(--accent);}
+  .article-footer{margin-top:72px;padding-top:32px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;}
+  .nav-btn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;background:none;border:1px solid var(--rule);padding:10px 20px;color:var(--ink2);transition:all .2s;}
+  .nav-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+  .nav-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
+  .nav-btn.primary:hover{background:var(--ink);border-color:var(--ink);}
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0;}
+  .tag{font-family:var(--mono);font-size:11px;padding:5px 12px;border:1px solid var(--rule);color:var(--ink3);letter-spacing:.05em;}
+  blockquote{margin:28px 0;padding:0 0 0 24px;border-left:2px solid var(--accent2);}
+  blockquote p{font-style:italic;font-size:16px;color:var(--ink2);text-indent:0!important;margin:0;}
+  blockquote cite{font-family:var(--mono);font-size:11px;color:var(--ink3);font-style:normal;display:block;margin-top:8px;}
+  table{width:100%;border-collapse:collapse;margin:28px 0;font-size:14.5px;}
+  th{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:12px 16px;text-align:left;}
+  td{padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--paper2);}
+  .progress-track{display:flex;gap:6px;align-items:center;}
+  .progress-dot{width:8px;height:8px;border-radius:50%;background:var(--rule);cursor:pointer;transition:background .2s,transform .2s;}
+  .progress-dot.done{background:var(--accent2);}
+  .progress-dot.active{background:var(--accent);transform:scale(1.3);}
+  .meta-row{display:flex;gap:24px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--rule);}
+  .meta-item{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink3);}
+  .meta-item strong{color:var(--ink2);font-weight:500;}
+  /* ZDP Visual */
+  .zdp-visual{margin:36px 0;position:relative;height:200px;}
+  .zdp-circle{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;}
+  .zdp-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;line-height:1.4;}
+  /* Error taxonomy */
+  .error-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:28px 0;background:var(--rule);}
+  .error-cell{padding:20px;background:white;}
+  .error-cell .etype{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;display:block;}
+  .error-cell p{font-size:13.5px;line-height:1.6;color:var(--ink2);margin:0;}
+  @media(max-width:900px){.sidebar{display:none;}.main{padding:32px 24px 80px;}.pull-quote{margin:36px -24px;padding:28px 24px;}.two-col,.error-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <span class="brand">TEACHSMART</span>
+  <span class="unit-label">Unidad 2 · Diagnóstico Inteligente</span>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Artículos</div>
+      <button class="nav-item active" onclick="show(0)"><span class="num">2.1</span>La Zona de Desarrollo Próximo</button>
+      <button class="nav-item" onclick="show(1)"><span class="num">2.2</span>Leer los errores del estudiante</button>
+      <button class="nav-item" onclick="show(2)"><span class="num">2.3</span>Estilos de aprendizaje: mito y realidad</button>
+      <button class="nav-item" onclick="show(3)"><span class="num">2.4</span>Objetivos SMART pedagógicos</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Progreso</div>
+      <div class="progress-track" id="progress-dots">
+        <div class="progress-dot active" onclick="show(0)"></div>
+        <div class="progress-dot" onclick="show(1)"></div>
+        <div class="progress-dot" onclick="show(2)"></div>
+        <div class="progress-dot" onclick="show(3)"></div>
+      </div>
+    </div>
+  </nav>
+  <main class="main">
+
+    <!-- ARTÍCULO 2.1 -->
+    <article class="article active" id="art-0">
+      <div class="cover-line">Unidad 2 · Artículo 2.1</div>
+      <h1 class="article-title">La Zona de <em>Desarrollo Próximo</em></h1>
+      <p class="article-subtitle">El concepto más poderoso que Vygotsky aportó a la pedagogía — y cómo usarlo para saber exactamente dónde intervenir con cada estudiante.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>13 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>4</strong></span>
+        <span class="meta-item">Nivel: <strong>Teórico-aplicado</strong></span>
+      </div>
+      <div class="tag-list">
+        <span class="tag">Vygotsky</span><span class="tag">ZDP</span><span class="tag">andamiaje</span><span class="tag">diagnóstico</span><span class="tag">nivel de desarrollo</span>
+      </div>
+
+      <p class="drop-cap">Lev Vygotsky murió en 1934, a los treinta y siete años, de tuberculosis, dejando incompleta una obra que tardaría décadas en llegar al mundo occidental. Sus ideas, censuradas durante años en la Unión Soviética, llegaron a los psicólogos educativos anglófonos recién en los años sesenta. Y aun así — o quizás por eso — el concepto central de su trabajo sigue siendo, noventa años después, uno de los marcos más útiles disponibles para cualquier persona cuyo trabajo sea ayudar a otra a aprender.</p>
+
+      <p>La <span class="key-term">Zona de Desarrollo Próximo</span> (ZDP) describe la distancia entre dos niveles de competencia de un estudiante: lo que puede hacer de manera independiente, y lo que puede hacer con la guía y el apoyo de alguien más competente. Es, en palabras del propio Vygotsky, "la distancia entre el nivel real de desarrollo, determinado por la resolución independiente de problemas, y el nivel de desarrollo potencial, determinado a través de la resolución de problemas bajo la guía de un adulto o en colaboración con pares más capaces."</p>
+
+      <h2>Por qué la ZDP importa para el diagnóstico</h2>
+      <p>El diagnóstico educativo convencional solo mide el primer nivel — lo que el estudiante puede hacer solo. Pruebas, exámenes, calificaciones: todo está diseñado para evaluar el desempeño independiente. Esto da información valiosa, pero incompleta. No dice nada sobre el potencial de desarrollo inmediato del estudiante ni sobre cuánto apoyo necesita para alcanzarlo.</p>
+      <p>Para el tutor, identificar la ZDP de un estudiante en un dominio específico es una tarea diagnóstica distinta — y más valiosa — que simplemente medir lo que ya sabe. Implica explorar activamente qué puede hacer el estudiante cuando recibe pistas, preguntas orientadoras, andamiaje parcial. Esa exploración revela no dónde está el estudiante, sino hacia dónde puede ir en el corto plazo con la intervención correcta.</p>
+
+      <div class="zdp-visual" aria-label="Diagrama conceptual de la ZDP">
+        <svg width="100%" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+          <circle cx="300" cy="100" r="95" fill="#2a6049" opacity="0.08" stroke="#2a6049" stroke-width="1"/>
+          <circle cx="300" cy="100" r="62" fill="#2a6049" opacity="0.12" stroke="#2a6049" stroke-width="1"/>
+          <circle cx="300" cy="100" r="30" fill="#2a6049" opacity="0.25" stroke="#2a6049" stroke-width="1.5"/>
+          <text x="300" y="96" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="#1a4030" letter-spacing="1">NIVEL REAL</text>
+          <text x="300" y="108" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#1a4030" opacity="0.7">puede solo</text>
+          <text x="300" y="175" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="#2a6049" letter-spacing="1">ZONA DE DESARROLLO PRÓXIMO</text>
+          <text x="300" y="187" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#2a6049" opacity="0.7">puede con apoyo — aquí trabaja el tutor</text>
+          <text x="300" y="14" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="#7a7066" letter-spacing="1">ZONA FUTURA</text>
+          <text x="300" y="26" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#7a7066" opacity="0.7">todavía fuera de alcance</text>
+        </svg>
+      </div>
+
+      <h2>Tres implicaciones prácticas</h2>
+      <ul class="concept-list">
+        <li>
+          <span class="c-num">1</span>
+          <div class="c-body">
+            <strong>Intervenir en la ZDP, no por debajo de ella</strong>
+            <p>Cuando el tutor trabaja consistentemente por debajo de la ZDP del estudiante —tareas que el estudiante ya puede hacer solo— no hay crecimiento. El estudiante se aburre, pierde motivación y el tiempo de la sesión se desperdicia. El objetivo es siempre trabajar en el borde del desarrollo actual: lo suficientemente desafiante para requerir esfuerzo, lo suficientemente alcanzable para no generar frustración paralizante.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">2</span>
+          <div class="c-body">
+            <strong>El apoyo debe ser provisional</strong>
+            <p>La ZDP no es estática. Lo que hoy requiere apoyo, mañana puede hacerse solo. El tutor que sostiene el andamiaje más allá de lo necesario genera dependencia. El objetivo de toda intervención es que el estudiante eventualmente no la necesite. Esto implica que el tutor monitorea activamente cuándo retirar el apoyo y va cediendo responsabilidad progresivamente.</p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">3</span>
+          <div class="c-body">
+            <strong>La ZDP es específica por dominio</strong>
+            <p>Un estudiante puede tener una ZDP amplia en álgebra y una estrecha en geometría. No existe "la ZDP del estudiante" en abstracto — existe la ZDP de ese estudiante para ese concepto específico en este momento. El diagnóstico debe ser granular: no "¿sabe matemáticas?" sino "¿qué puede hacer con ecuaciones de segundo grado con apoyo que todavía no puede hacer solo?"</p>
+          </div>
+        </li>
+      </ul>
+
+      <h2>Cómo identificar la ZDP en la práctica</h2>
+      <p>La herramienta más directa para explorar la ZDP es lo que los investigadores llaman <span class="key-term">evaluación dinámica</span> — en contraste con la evaluación estática de los exámenes tradicionales. La evaluación dinámica observa no solo el producto del aprendizaje sino el proceso: cómo responde el estudiante cuando recibe diferentes tipos y cantidades de apoyo.</p>
+
+      <div class="figure">
+        <table>
+          <thead><tr><th>Paso</th><th>Qué hacer</th><th>Qué observar</th></tr></thead>
+          <tbody>
+            <tr><td>1. Tarea sin apoyo</td><td>Presenta el problema sin instrucciones adicionales</td><td>¿Qué intenta? ¿Dónde se bloquea? ¿Qué estrategias usa?</td></tr>
+            <tr><td>2. Pista conceptual</td><td>Ofrece una pista sobre el concepto relevante</td><td>¿La pista es suficiente? ¿Activa conocimiento previo?</td></tr>
+            <tr><td>3. Pista procedimental</td><td>Sugiere el primer paso del proceso</td><td>¿Puede continuar a partir de ahí?</td></tr>
+            <tr><td>4. Modelo parcial</td><td>Resuelve una parte y pide que continúe</td><td>¿Puede completar siguiendo el patrón?</td></tr>
+            <tr><td>5. Modelo completo</td><td>Resuelve un problema similar completamente</td><td>¿Puede replicar el proceso inmediatamente?</td></tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 2.1 — Protocolo de evaluación dinámica para identificar la ZDP</span>
+      </div>
+
+      <p class="no-indent">El nivel de apoyo en que el estudiante logra resolver el problema define el borde de su ZDP. Si necesita llegar al paso 4, su ZDP actual está entre "no puede solo" y "puede con modelo parcial". La intervención del tutor debe trabajar en ese borde específico.</p>
+
+      <div class="theory-box" data-label="Concepto relacionado">
+        <h4>Andamiaje (Bruner, Wood & Ross, 1976)</h4>
+        <p>Jerome Bruner tomó la idea de la ZDP y desarrolló el concepto de <strong>andamiaje</strong> para describir el tipo de apoyo que hace posible el trabajo en esa zona. Un andamio en construcción tiene tres características: sostiene estructuras que todavía no pueden sostenerse solas, es temporal, y se retira cuando la estructura es autosuficiente.</p>
+        <p>El andamiaje pedagógico funciona igual: apoya al estudiante para que haga algo que no puede hacer todavía solo, se calibra exactamente al nivel de dificultad que enfrenta, y se retira gradualmente a medida que el estudiante gana competencia. Un andamiaje mal calibrado —demasiado, demasiado poco, o que no se retira a tiempo— es pedagógicamente ineficiente.</p>
+      </div>
+
+      <div class="pull-quote">
+        <p>Lo que el niño puede hacer con ayuda hoy, podrá hacerlo solo mañana. Enseñar en la ZDP es apostar por el futuro del estudiante, no por su presente.</p>
+        <span class="attribution">— Lev Vygotsky, El desarrollo de los procesos psicológicos superiores</span>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>La Zona de Desarrollo Próximo describe el espacio entre lo que el estudiante puede hacer solo y lo que puede hacer con apoyo apropiado. El diagnóstico efectivo no solo mide el primer nivel — explora activamente el segundo. La intervención del tutor debe trabajar en ese borde: ni por debajo (aburrimiento) ni muy por encima (frustración). El andamiaje que provee debe ser provisional y retirarse a medida que el estudiante gana competencia.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" disabled>← Anterior</button>
+        <div class="progress-track"><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(1)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ARTÍCULO 2.2 -->
+    <article class="article" id="art-1">
+      <div class="cover-line">Unidad 2 · Artículo 2.2</div>
+      <h1 class="article-title">Leer los <em>errores</em> del estudiante</h1>
+      <p class="article-subtitle">Los errores no son fracasos que corregir — son radiografías del pensamiento del estudiante. Aprender a leerlos es la habilidad diagnóstica más poderosa de un tutor.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>14 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>5</strong></span>
+        <span class="meta-item">Nivel: <strong>Aplicado</strong></span>
+      </div>
+      <div class="tag-list">
+        <span class="tag">análisis de errores</span><span class="tag">Newman</span><span class="tag">Radatz</span><span class="tag">error diagnóstico</span><span class="tag">misconceptions</span>
+      </div>
+
+      <p class="drop-cap">Hay dos maneras de responder cuando un estudiante comete un error. La primera — la más instintiva — es corregirlo: señalar qué estuvo mal y mostrar cómo debería hacerse. La segunda es más lenta, más difícil, y produce resultados radicalmente mejores: preguntar por qué el estudiante llegó a esa respuesta. Investigar el error. Entender la lógica interna que lo generó.</p>
+
+      <p>Esta distinción no es trivial. Cuando un tutor corrige un error sin analizarlo, elimina la manifestación superficial sin tocar la causa. El estudiante puede incluso repetir el procedimiento correcto inmediatamente después de la corrección — y volver a cometer el mismo error una semana más tarde, porque el modelo mental que lo produce nunca fue modificado.</p>
+
+      <h2>Los errores tienen estructura</h2>
+      <p>Una de las contribuciones más importantes de la investigación en didáctica es el descubrimiento de que los errores de los estudiantes no son aleatorios. Tienen patrones. Emergen de modelos mentales consistentes — aunque incorrectos — que el estudiante aplica de manera sistemática. Cuando un estudiante suma fracciones y escribe 1/2 + 1/3 = 2/5, no está siendo descuidado: está aplicando coherentemente una regla incorrecta (sumar numeradores y denominadores por separado). Esa regla es su teoría actual sobre cómo funcionan las fracciones.</p>
+
+      <div class="theory-box" data-label="Marco teórico">
+        <h4>Taxonomía de errores de Radatz (1979)</h4>
+        <p>Hendrik Radatz clasificó los errores matemáticos en cinco categorías que siguen siendo útiles hoy para cualquier área de conocimiento:</p>
+        <p><strong>Dificultades de lenguaje:</strong> el estudiante no comprende el enunciado, los términos o las instrucciones. <strong>Dificultades de representación espacial:</strong> problemas con la visualización de conceptos geométricos o estructurales. <strong>Conocimiento previo deficiente:</strong> falta de dominio de conceptos prerequisitos sobre los que se construye el nuevo. <strong>Asociaciones incorrectas:</strong> aplicación de una regla correcta en un contexto donde no aplica. <strong>Aplicación incorrecta de reglas:</strong> el estudiante conoce el procedimiento pero lo aplica mal o de manera incompleta.</p>
+        <p>Identificar en cuál de estas categorías cae el error del estudiante orienta inmediatamente la intervención del tutor.</p>
+      </div>
+
+      <h2>El modelo de Newman: dónde se rompe la comprensión</h2>
+      <p>Anne Newman (1977) desarrolló un modelo diagnóstico para identificar exactamente en qué punto del proceso de resolución de un problema se produce el error. El modelo propone cinco estadios secuenciales, cada uno con su correspondiente pregunta de entrevista diagnóstica.</p>
+
+      <div class="error-grid">
+        <div class="error-cell">
+          <span class="etype" style="color:var(--accent);">1 · Lectura</span>
+          <p>El estudiante no puede leer o decodificar el enunciado.</p>
+          <p style="margin-top:8px;font-style:italic;font-size:12.5px;">"¿Puedes leer el problema en voz alta?"</p>
+        </div>
+        <div class="error-cell">
+          <span class="etype" style="color:var(--accent);">2 · Comprensión</span>
+          <p>Lee el enunciado pero no entiende qué se le pide.</p>
+          <p style="margin-top:8px;font-style:italic;font-size:12.5px;">"¿Qué te está pidiendo el problema?"</p>
+        </div>
+        <div class="error-cell">
+          <span class="etype" style="color:var(--accent);">3 · Transformación</span>
+          <p>Entiende qué se pide pero no sabe qué operación o proceso usar.</p>
+          <p style="margin-top:8px;font-style:italic;font-size:12.5px;">"¿Qué harías para resolverlo?"</p>
+        </div>
+        <div class="error-cell">
+          <span class="etype" style="color:var(--accent);">4 · Habilidad de proceso</span>
+          <p>Sabe qué hacer pero comete errores al ejecutar el procedimiento.</p>
+          <p style="margin-top:8px;font-style:italic;font-size:12.5px;">"Muéstrame cómo lo resuelves."</p>
+        </div>
+        <div class="error-cell">
+          <span class="etype" style="color:var(--accent);">5 · Codificación</span>
+          <p>Resuelve correctamente pero no sabe expresar o interpretar la respuesta.</p>
+          <p style="margin-top:8px;font-style:italic;font-size:12.5px;">"¿Qué significa ese número en el contexto del problema?"</p>
+        </div>
+        <div class="error-cell" style="background:var(--paper2);">
+          <span class="etype" style="color:var(--ink3);">Uso diagnóstico</span>
+          <p>Cada estadio señala una intervención distinta. El error en el estadio 2 no se resuelve con más práctica — se resuelve con trabajo explícito de comprensión.</p>
+        </div>
+      </div>
+
+      <h2>Misconceptions: los errores más difíciles de corregir</h2>
+      <p>No todos los errores son iguales. Hay errores de descuido — el estudiante sabe lo que hace pero se equivocó en un paso — y hay <span class="key-term">misconceptions</span>: concepciones erróneas profundamente arraigadas que el estudiante usa de manera consistente y que, con frecuencia, interfieren activamente con el aprendizaje correcto.</p>
+      <p>Las misconceptions son particularmente resistentes porque tienen una característica paradójica: el estudiante las usa porque le funcionan en algunos contextos. El estudiante que suma denominadores en fracciones probablemente aplicó esa regla antes en sumas de números enteros y le funcionó. Su error no es producto de la ignorancia sino de una generalización excesiva de una regla que era correcta en un dominio diferente.</p>
+
+      <div class="two-col">
+        <div class="col-panel b">
+          <span class="panel-label">Corrección superficial (ineficaz)</span>
+          <p>"Eso está mal. No se suman los denominadores. La regla es: buscas el mínimo común múltiplo, lo pones abajo, y arriba calculas los equivalentes."</p>
+          <p>El estudiante repite el procedimiento. No entiende por qué. En la siguiente sesión vuelve al error anterior.</p>
+        </div>
+        <div class="col-panel a">
+          <span class="panel-label">Intervención sobre la misconception</span>
+          <p>"¿Por qué crees que se suman los denominadores? Muéstrame con una pizza: si tienes la mitad y te dan un tercio, ¿tienes dos quintos de pizza?"</p>
+          <p>La confrontación con el caso concreto revela que el modelo mental produce resultados absurdos. El estudiante necesita reconstruir su comprensión — y ahora está motivado para hacerlo.</p>
+        </div>
+      </div>
+
+      <h2>El protocolo del error: una herramienta práctica</h2>
+      <p>Cuando el estudiante comete un error, el tutor de alto impacto sigue mentalmente una secuencia antes de intervenir:</p>
+      <ul class="concept-list">
+        <li><span class="c-num">1</span><div class="c-body"><strong>Pausa — no corrijas inmediatamente</strong><p>La corrección inmediata impide que el estudiante procese el error. Un segundo de pausa es suficiente para cambiar el modo de intervención.</p></div></li>
+        <li><span class="c-num">2</span><div class="c-body"><strong>Indaga la lógica del error</strong><p>"¿Cómo llegaste a esa respuesta?" / "Explícame tu razonamiento." Esto revela el modelo mental, no solo el resultado incorrecto.</p></div></li>
+        <li><span class="c-num">3</span><div class="c-body"><strong>Clasifica el error</strong><p>¿Es un error de lectura, de comprensión, de procedimiento, de misconception? La clasificación orienta la intervención.</p></div></li>
+        <li><span class="c-num">4</span><div class="c-body"><strong>Diseña la intervención correcta</strong><p>Un error de misconception requiere confrontación conceptual. Un error procedimental requiere práctica deliberada. Un error de comprensión del enunciado requiere trabajo de lenguaje. Cada tipo de error tiene su intervención específica.</p></div></li>
+      </ul>
+
+      <blockquote>
+        <p>Un error bien analizado vale más que diez ejercicios correctos. Los ejercicios correctos confirman lo que ya se sabe. El error revela exactamente qué falta construir.</p>
+        <cite>— Principio TeachSmart</cite>
+      </blockquote>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>Los errores de los estudiantes tienen estructura y lógica interna. El análisis de errores — identificar el tipo, indagar la lógica que los produce, clasificarlos según los modelos de Newman o Radatz — es una de las herramientas diagnósticas más potentes disponibles para el tutor. Las misconceptions, en particular, requieren intervención conceptual directa, no simplemente más práctica del procedimiento correcto.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(0)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(2)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ARTÍCULO 2.3 -->
+    <article class="article" id="art-2">
+      <div class="cover-line">Unidad 2 · Artículo 2.3</div>
+      <h1 class="article-title">Estilos de aprendizaje: <em>mito y realidad</em></h1>
+      <p class="article-subtitle">La teoría más popular de la pedagogía popular — y por qué la evidencia no la respalda. Qué usar en su lugar para personalizar realmente la enseñanza.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>12 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>4</strong></span>
+        <span class="meta-item">Nivel: <strong>Crítico</strong></span>
+      </div>
+      <div class="tag-list">
+        <span class="tag">VARK</span><span class="tag">estilos de aprendizaje</span><span class="tag">Kolb</span><span class="tag">evidencia empírica</span><span class="tag">preferencias de aprendizaje</span>
+      </div>
+
+      <p class="drop-cap">Pocos conceptos en la historia de la pedagogía han tenido una difusión tan masiva con tan poca base empírica como los llamados "estilos de aprendizaje". La idea de que cada persona tiene un estilo dominante — visual, auditivo, kinestésico, o alguna otra categoría según el modelo que se use — y que aprende mejor cuando la enseñanza se adapta a ese estilo, parece tan intuitiva y tan útil que se convirtió en dogma en talleres de formación docente, manuales pedagógicos y conversaciones de sala de profesores en todo el mundo.</p>
+      <p>El problema es que, cuando los investigadores pusieron esta hipótesis a prueba con el rigor metodológico que merece, los resultados fueron consistentemente negativos. No porque la idea sea absurda, sino porque la predicción central que la hace útil — que adaptar la enseñanza al estilo dominante del estudiante mejora el aprendizaje — no se cumple en los datos.</p>
+
+      <h2>La hipótesis de la meshing y por qué falla</h2>
+      <p>El núcleo de la teoría de estilos de aprendizaje es lo que Pashler y colaboradores (2008) llamaron la <span class="key-term">hipótesis de la meshing</span> (encaje): el aprendizaje mejora cuando el formato de enseñanza se corresponde con el estilo del estudiante. Para que esta hipótesis sea válida, se necesitaría demostrar que un estudiante "visual" aprende mejor con materiales visuales que auditivos, y que un estudiante "auditivo" aprende mejor con materiales auditivos que visuales.</p>
+      <p>Este es exactamente el diseño experimental que usaron Pashler y su equipo en su revisión sistemática de 2008. Y lo que encontraron fue que, en la gran mayoría de los estudios disponibles, no había interacción entre estilo y formato: los materiales mejores producían mejores resultados para todos los estudiantes, independientemente de su estilo declarado.</p>
+
+      <div class="pull-quote">
+        <p>La popularidad de los estilos de aprendizaje es inversamente proporcional a la evidencia que los respalda. Es el neuromito más costoso de la educación contemporánea.</p>
+        <span class="attribution">— Pashler et al., Psychological Science in the Public Interest, 2008</span>
+      </div>
+
+      <h2>Lo que sí existe: preferencias, no estilos</h2>
+      <p>Rechazar la hipótesis de la meshing no significa que todos los estudiantes aprendan igual ni que la personalización sea irrelevante. Significa que el mecanismo de personalización es más complejo y más interesante que la simple correspondencia de formato.</p>
+      <p>Lo que la investigación sí documenta con solidez son las <span class="key-term">preferencias de aprendizaje</span>: tendencias reales del estudiante hacia ciertos tipos de actividades, ritmos, contextos o interacciones. Estas preferencias no determinan cómo aprende el estudiante — determinan cómo prefiere aprender. La distinción importa porque las preferencias son relevantes para la motivación y el compromiso, aunque no sean determinantes del aprendizaje.</p>
+
+      <div class="two-col">
+        <div class="col-panel b">
+          <span class="panel-label">Lo que no funciona</span>
+          <p>Clasificar al estudiante como "visual" y diseñar todas las sesiones en torno a material visual.</p>
+          <p>Usar la categoría de estilo para predecir cómo aprenderá el estudiante o para excusar dificultades.</p>
+          <p>"Es que tú eres kinestésico, por eso no aprendes bien leyendo."</p>
+        </div>
+        <div class="col-panel a">
+          <span class="panel-label">Lo que sí funciona</span>
+          <p>Preguntar al estudiante cómo prefiere trabajar los conceptos y usar esa información para diseñar actividades que lo comprometan.</p>
+          <p>Variar los formatos de presentación no por el estilo del estudiante, sino porque la variedad mantiene el compromiso y facilita la construcción de representaciones múltiples del mismo concepto.</p>
+        </div>
+      </div>
+
+      <h2>El modelo de Kolb: lo que sí es útil</h2>
+      <p>El modelo de experiential learning de David Kolb (1984) es frecuentemente citado junto con los estilos de aprendizaje, pero merece un tratamiento separado porque su aporte más valioso no está en la taxonomía de estilos (Divergente, Asimilador, Convergente, Acomodador) sino en el <span class="key-term">ciclo de aprendizaje experiencial</span> que propone.</p>
+
+      <div class="theory-box" data-label="Marco teórico">
+        <h4>El ciclo de Kolb como herramienta de diseño</h4>
+        <p>Kolb propone que el aprendizaje efectivo pasa por cuatro fases: <strong>Experiencia concreta</strong> (hacer, vivenciar), <strong>Observación reflexiva</strong> (analizar qué pasó), <strong>Conceptualización abstracta</strong> (formular principios generales), y <strong>Experimentación activa</strong> (aplicar los principios a nuevas situaciones).</p>
+        <p>Lo que es útil para el tutor no es clasificar al estudiante en un estilo según qué fase prefiere, sino usar el ciclo como guía de secuencia didáctica: comenzar con una experiencia concreta, facilitar la reflexión sobre ella, construir el concepto desde ahí, y cerrar aplicando el concepto. Este orden respeta la manera en que el aprendizaje se consolida.</p>
+      </div>
+
+      <h2>Qué usar realmente para personalizar</h2>
+      <p>Si los estilos de aprendizaje no son el mecanismo correcto de personalización, ¿qué lo es? La investigación apunta a variables mucho más específicas y accionables:</p>
+      <ul class="concept-list">
+        <li><span class="c-num">1</span><div class="c-body"><strong>Conocimiento previo</strong><p>La variable más determinante del aprendizaje es lo que el estudiante ya sabe. Personalizar en función del nivel de conocimiento previo tiene mucho más impacto que personalizar en función del estilo.</p></div></li>
+        <li><span class="c-num">2</span><div class="c-body"><strong>Carga emocional y motivacional</strong><p>El estado emocional del estudiante, sus miedos frente a la materia, su historia de éxitos y fracasos — todo esto afecta profundamente el aprendizaje y debe tenerse en cuenta en el diagnóstico.</p></div></li>
+        <li><span class="c-num">3</span><div class="c-body"><strong>Estrategias de estudio vigentes</strong><p>¿Cómo estudia el estudiante por su cuenta? ¿Usa estrategias efectivas (práctica espaciada, auto-evaluación, elaboración) o ineficaces (releer, subrayar, copiar)?</p></div></li>
+        <li><span class="c-num">4</span><div class="c-body"><strong>Contexto y barreras externas</strong><p>Tiempo disponible, nivel de estrés, dinámicas familiares, acceso a materiales — variables contextuales que el diagnóstico debe capturar para que el plan sea realista.</p></div></li>
+      </ul>
+
+      <div class="callout">
+        <span class="callout-label">Concepto central de este artículo</span>
+        <p>La hipótesis central de los estilos de aprendizaje — que adaptar el formato de enseñanza al estilo dominante del estudiante mejora el aprendizaje — no está respaldada por la evidencia empírica. Las preferencias de aprendizaje son reales e influyen en la motivación, pero no determinan cómo aprende el estudiante. La personalización efectiva se basa en el conocimiento previo, el estado emocional, las estrategias de estudio y el contexto del estudiante, no en su clasificación de estilo.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(1)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div></div>
+        <button class="nav-btn primary" onclick="show(3)">Siguiente artículo →</button>
+      </div>
+    </article>
+
+    <!-- ARTÍCULO 2.4 -->
+    <article class="article" id="art-3">
+      <div class="cover-line">Unidad 2 · Artículo 2.4</div>
+      <h1 class="article-title">Objetivos <em>SMART</em> pedagógicos</h1>
+      <p class="article-subtitle">Cómo transformar una intención vaga — "mejorar en matemáticas" — en un objetivo que orienta el trabajo, mide el avance y motiva al estudiante.</p>
+      <div class="meta-row">
+        <span class="meta-item">Lectura estimada: <strong>11 min</strong></span>
+        <span class="meta-item">Conceptos clave: <strong>5</strong></span>
+        <span class="meta-item">Nivel: <strong>Aplicado</strong></span>
+      </div>
+      <div class="tag-list">
+        <span class="tag">objetivos SMART</span><span class="tag">Doran</span><span class="tag">planeación pedagógica</span><span class="tag">metas de aprendizaje</span><span class="tag">motivación</span>
+      </div>
+
+      <p class="drop-cap">Una de las preguntas más reveladoras que un tutor puede hacerle a un nuevo estudiante es: "¿Qué quieres lograr con estas clases?" La respuesta habitual es alguna variación de: "Quiero mejorar en matemáticas." O: "Quiero entender química." O: "Quiero subir mis notas." Estas respuestas son comprensibles — y completamente inútiles como objetivos pedagógicos.</p>
+      <p>"Mejorar en matemáticas" no dice nada sobre qué significa mejorar, cuánto, en qué plazo, medido cómo, partiendo de dónde. Sin esa precisión, el tutor no puede diseñar, el estudiante no puede evaluar su propio avance, y la tutoría navega sin destino definido.</p>
+
+      <h2>El marco SMART aplicado a la pedagogía</h2>
+      <p>El acrónimo SMART fue introducido por George Doran en 1981 en el contexto de la gestión organizacional, pero su estructura es directamente aplicable a la planificación pedagógica. Un objetivo SMART es:</p>
+
+      <div class="figure">
+        <table>
+          <thead><tr><th>Letra</th><th>Criterio</th><th>Pregunta diagnóstica</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td><strong>S</strong> — Specific</td><td>Específico</td><td>¿Qué exactamente va a aprender/poder hacer?</td><td>"Resolver ecuaciones cuadráticas por factorización"</td></tr>
+            <tr><td><strong>M</strong> — Measurable</td><td>Medible</td><td>¿Cómo sabremos que se logró?</td><td>"Sin errores en 8 de 10 ejercicios nuevos"</td></tr>
+            <tr><td><strong>A</strong> — Achievable</td><td>Alcanzable</td><td>¿Es posible dado el punto de partida actual?</td><td>Basado en diagnóstico de la ZDP real</td></tr>
+            <tr><td><strong>R</strong> — Relevant</td><td>Relevante</td><td>¿Por qué importa para el estudiante?</td><td>"Para el parcial del 15 de noviembre"</td></tr>
+            <tr><td><strong>T</strong> — Time-bound</td><td>Con plazo</td><td>¿Para cuándo?</td><td>"En las próximas cuatro sesiones"</td></tr>
+          </tbody>
+        </table>
+        <span class="figure-caption">Figura 2.4 — Estructura del objetivo SMART aplicada a contextos pedagógicos</span>
+      </div>
+
+      <h2>Del objetivo general al objetivo SMART: tres transformaciones</h2>
+      <p>El ejercicio más útil para dominar la formulación SMART es practicar la transformación de objetivos vagos en objetivos precisos. Las tres dimensiones que casi siempre faltan son la especificidad del contenido, el criterio de éxito medible y el plazo.</p>
+
+      <div class="concept-list">
+        <li>
+          <span class="c-num">1</span>
+          <div class="c-body">
+            <strong>"Quiero mejorar en inglés"</strong>
+            <p>→ <em>"Ser capaz de sostener una conversación de 5 minutos sobre temas cotidianos con fluidez básica (sin pausas largas para buscar vocabulario) en 8 semanas."</em></p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">2</span>
+          <div class="c-body">
+            <strong>"Necesito entender la Segunda Guerra Mundial"</strong>
+            <p>→ <em>"Poder explicar, sin notas, las causas principales y las consecuencias inmediatas de la IIGM con al menos 4 factores causales correctamente relacionados — para el ensayo de historia del 20 de octubre."</em></p>
+          </div>
+        </li>
+        <li>
+          <span class="c-num">3</span>
+          <div class="c-body">
+            <strong>"Quiero pasar cálculo"</strong>
+            <p>→ <em>"Resolver correctamente el 75% de los problemas de derivadas de funciones compuestas en el parcial del martes. Punto de partida: actualmente resuelvo el 40%."</em></p>
+          </div>
+        </li>
+      </ul>
+
+      <h2>Objetivos de proceso vs. objetivos de resultado</h2>
+      <p>Una distinción importante en la formulación de objetivos pedagógicos — que el marco SMART original no captura — es la diferencia entre objetivos de <span class="key-term">resultado</span> y objetivos de <span class="key-term">proceso</span>. Los objetivos de resultado definen qué se logrará; los de proceso definen cómo se trabajará para lograrlo.</p>
+      <p>En pedagogía, los objetivos de proceso son frecuentemente más útiles para el trabajo cotidiano porque son completamente controlables por el estudiante. "Sacar 8 en el parcial" es un objetivo de resultado — hay factores fuera del control del estudiante que lo afectan. "Practicar derivadas durante 30 minutos diarios con ejercicios nuevos y verificar cada respuesta" es un objetivo de proceso — el estudiante puede ejecutarlo independientemente de los resultados.</p>
+      <p>El tutor eficaz diseña objetivos en ambas dimensiones: resultados claros que dan dirección, y procesos concretos que el estudiante puede ejecutar.</p>
+
+      <div class="callout">
+        <span class="callout-label">Para la práctica</span>
+        <p>En la primera sesión con un nuevo estudiante, no empieces con el contenido. Dedica 10 minutos a construir juntos el objetivo SMART de las próximas semanas. Hazlo visible — escríbelo. Un objetivo compartido y explícito cambia la dinámica de todas las sesiones siguientes: el estudiante sabe hacia dónde va, y el tutor tiene un criterio claro para evaluar si las intervenciones están funcionando.</p>
+      </div>
+
+      <blockquote>
+        <p>Un objetivo vago es un contrato sin cláusulas. Nadie sabe cuándo se cumplió, nadie sabe si se está avanzando, y cuando llega el momento de evaluar, tanto el tutor como el estudiante pueden interpretar el resultado como quieran.</p>
+        <cite>— Principio TeachSmart</cite>
+      </blockquote>
+
+      <div class="callout">
+        <span class="callout-label">Síntesis de la Unidad 2</span>
+        <p>El diagnóstico inteligente opera en cuatro niveles: identificar la Zona de Desarrollo Próximo del estudiante para cada dominio específico; analizar la estructura y la lógica de sus errores para entender los modelos mentales que los producen; rechazar la simplificación de los estilos de aprendizaje en favor de variables más accionables como conocimiento previo, estado emocional y estrategias de estudio; y traducir los objetivos vagos del estudiante en objetivos SMART que orienten el trabajo y hagan visible el avance.</p>
+      </div>
+
+      <div class="article-footer">
+        <button class="nav-btn" onclick="show(2)">← Anterior</button>
+        <div class="progress-track"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot active"></div></div>
+        <button class="nav-btn" disabled style="opacity:.3;cursor:default;">Fin de la unidad</button>
+      </div>
+    </article>
+
+  </main>
+</div>
+<script>
+  const articles=document.querySelectorAll('.article');
+  const navItems=document.querySelectorAll('.nav-item');
+  const dots=document.querySelectorAll('#progress-dots .progress-dot');
+  let visited=new Set([0]);
+  function show(idx){
+    articles.forEach((a,i)=>a.classList.toggle('active',i===idx));
+    navItems.forEach((n,i)=>n.classList.toggle('active',i===idx));
+    visited.add(idx);
+    dots.forEach((d,i)=>{d.classList.remove('active','done');if(i===idx)d.classList.add('active');else if(visited.has(i))d.classList.add('done');});
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
